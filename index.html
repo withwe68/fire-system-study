@@ -3,52 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>소방시설관리사 2차 점검실무 - 일일 학습 노트</title>
+  <title>소방시설관리사 2차 점검실무 - 일일 인출 대시보드</title>
   <style>
-    :root { --primary: #003366; --bg: #f8f9fa; --card-bg: #ffffff; --text: #212529; --border: #dee2e6; }
+    :root {
+      --primary: #003366;
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text: #212529;
+      --border: #ced4da;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; }
-    .container { max-width: 900px; margin: 0 auto; }
-    header { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
-    h1 { color: var(--primary); font-size: 1.5rem; margin-bottom: 8px; }
-    p.desc { font-size: 0.95rem; color: #6c757d; }
-    .search-bar { margin-top: 16px; }
-    input[type="text"] { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 16px;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+    header {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+    h1 { color: var(--primary); font-size: 1.45rem; margin-bottom: 6px; }
+    .meta-desc { font-size: 0.88rem; color: #6c757d; }
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    input[type="text"] {
+      flex: 1;
+      min-width: 240px;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.92rem;
+    }
     .grid { display: grid; gap: 14px; }
-    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 8px; }
-    .card-header { display: flex; justify-content: space-between; align-items: center; }
-    .badge { background: #e7f5ff; color: #1971c2; font-weight: 700; font-size: 0.8rem; padding: 3px 8px; border-radius: 4px; }
-    .date { font-size: 0.85rem; color: #868e96; }
-    .card-title { font-size: 1.15rem; color: #111; text-decoration: none; font-weight: bold; }
-    .facility { font-size: 0.85rem; color: #495057; font-weight: 500; }
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-    .tag { background: #f1f3f5; font-size: 0.75rem; padding: 2px 6px; border-radius: 3px; color: #495057; }
-    .btn-group { display: flex; gap: 8px; margin-top: 8px; }
-    .btn { display: inline-block; text-align: center; padding: 8px 14px; border-radius: 5px; font-size: 0.88rem; text-decoration: none; font-weight: 600; }
-    .btn-primary { background: var(--primary); color: #fff; flex: 1; }
-    .btn-outline { border: 1px solid var(--border); color: #495057; }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .badges { display: flex; gap: 6px; align-items: center; }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 4px;
+    }
+    .badge-day { background: #e7f5ff; color: #1971c2; }
+    .badge-exam { background: #fff3bf; color: #d9480f; }
+    .badge-chk { background: #e6fcf5; color: #0ca678; }
+    .v-date { font-size: 0.8rem; color: #868e96; }
+    .card-title {
+      font-size: 1.12rem;
+      color: #111;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .nftc-ref { font-size: 0.82rem; color: #495057; }
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
+    .tag {
+      background: #f1f3f5;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: #495057;
+    }
+    .btn-group { display: flex; gap: 8px; margin-top: 6px; }
+    .btn {
+      display: inline-block;
+      text-align: center;
+      padding: 7px 12px;
+      border-radius: 5px;
+      font-size: 0.85rem;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--primary); color: #fff; flex: 1; border: none; }
+    .btn-outline { border: 1px solid var(--border); color: #495057; background: #fff; }
+    .error-msg {
+      background: #ffe3e3;
+      border: 1px solid #ffa8a8;
+      padding: 12px;
+      border-radius: 6px;
+      color: #c92a2a;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>🚒 소방시설관리사 2차 점검실무 아카이브</h1>
-      <p class="desc">화재안전기술기준(NFTC) & 점검매뉴얼 연계 일일 학습 바인더</p>
-      <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="설비명, 키워드(예: 릴리프, 140%, 체절) 검색..." onkeyup="filterCards()">
+      <h1>🚒 소방시설관리사 2차 점검실무 인출 대시보드</h1>
+      <p class="meta-desc">NFTC 기술기준 원문 · 소방시설 자체점검표 항목(3-C 등) · 빈출 계산식 인출 훈련</p>
+      <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="키워드(예: 체절, 140%, 릴리프, 24회) 검색..." onkeyup="filterCards()">
       </div>
     </header>
     <div class="grid" id="cardContainer"></div>
   </div>
+
   <script>
     let studyData = [];
-    async function loadStudyList() {
+    async function init() {
+      const container = document.getElementById('cardContainer');
       try {
         const res = await fetch('posts.json');
+        if (!res.ok) throw new Error('응답 코드: ' + res.status);
         studyData = await res.json();
         renderCards(studyData);
-      } catch (err) { console.error(err); }
+      } catch (err) {
+        container.innerHTML = `<div class="error-msg">⚠️ posts.json 파일을 불러오지 못했습니다. 로컬 웹서버 또는 파일 경로를 확인해주세요. (${err.message})</div>`;
+      }
     }
+
     function renderCards(list) {
       const container = document.getElementById('cardContainer');
       container.innerHTML = '';
@@ -56,23 +142,44 @@
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-          <div class="card-header"><span class="badge">${item.day}</span><span class="date">${item.date}</span></div>
-          <div class="facility">📌 ${item.facility}</div>
+          <div class="card-top">
+            <div class="badges">
+              <span class="badge badge-day">${item.day}</span>
+              ${item.exam ? item.exam.map(e => `<span class="badge badge-exam">${e}</span>`).join('') : ''}
+              ${item.checklist ? item.checklist.map(c => `<span class="badge badge-chk">${c}</span>`).join('') : ''}
+            </div>
+            <span class="v-date">기준확인: ${item.verifiedAt || item.date}</span>
+          </div>
+          <div class="nftc-ref">📘 <strong>적용 기준:</strong> ${item.nftc.join(' · ')} (${item.facility})</div>
           <a href="${item.file}" class="card-title">${item.title}</a>
-          <div class="tags">${item.keywords.map(k => `<span class="tag">#${k}</span>`).join('')}</div>
+          <div class="tags">
+            ${item.keywords.map(k => `<span class="tag">#${k}</span>`).join('')}
+          </div>
           <div class="btn-group">
-            <a href="${item.file}" class="btn btn-primary">📖 학습노트 열기</a>
-            <a href="${item.file}" target="_blank" class="btn btn-outline">🖨️ A4 인쇄 / PDF</a>
+            <a href="${item.file}" class="btn btn-primary">📖 학습 및 인출(가리기) 모드</a>
+            <button onclick="printCard('${item.file}')" class="btn btn-outline">🖨️ A4 직접 인쇄</button>
           </div>
         `;
         container.appendChild(card);
       });
     }
+
+    function printCard(url) {
+      const w = window.open(url, '_blank');
+      w.onload = function() { w.print(); };
+    }
+
     function filterCards() {
       const q = document.getElementById('searchInput').value.toLowerCase();
-      renderCards(studyData.filter(i => i.title.toLowerCase().includes(q) || i.facility.toLowerCase().includes(q) || i.keywords.some(k => k.toLowerCase().includes(q))));
+      const filtered = studyData.filter(i => 
+        i.title.toLowerCase().includes(q) ||
+        i.facility.toLowerCase().includes(q) ||
+        (i.keywords && i.keywords.some(k => k.toLowerCase().includes(q))) ||
+        (i.exam && i.exam.some(e => e.toLowerCase().includes(q)))
+      );
+      renderCards(filtered);
     }
-    window.onload = loadStudyList;
+    window.onload = init;
   </script>
 </body>
 </html>
