@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>소방시설관리사 2차 점검실무 - Day 01 가압송수장치 펌프 성능시험</title>
+  <style>
+    @page { size: A4 portrait; margin: 15mm; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; line-height: 1.45; color: #111; font-size: 11pt; margin: 0; padding: 15px; }
+    .header-box { border: 1.5pt solid #222; padding: 8px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; font-size: 9pt; background-color: #f8f9fa; font-weight: bold; }
+    h1 { font-size: 16pt; border-bottom: 2pt solid #003366; padding-bottom: 4px; color: #003366; }
+    h2 { font-size: 12pt; background-color: #e9ecef; padding: 4px 8px; margin: 14px 0 8px 0; border-left: 4pt solid #003366; }
+    table { width: 100%; border-collapse: collapse; margin: 8px 0 12px 0; font-size: 9.5pt; }
+    th, td { border: 1pt solid #444; padding: 6px 8px; }
+    th { background-color: #f1f3f5; text-align: center; }
+    pre { background-color: #f8f9fa; border: 1pt solid #ccc; padding: 8px; font-family: monospace; font-size: 8.8pt; line-height: 1.35; white-space: pre-wrap; }
+    .highlight { color: #c92a2a; font-weight: bold; }
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .card { border: 1pt solid #bbb; padding: 8px; background-color: #fff; font-size: 9.5pt; }
+    .card-title { font-weight: bold; color: #0b7285; margin-bottom: 4px; }
+    .exam-box { border: 1.5pt dashed #495057; padding: 10px; background-color: #fdfdfe; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="header-box">
+    <span>[2027 소방시설관리사 2차] 점검실무행정 초압축 회독 (NFTC 102/103)</span>
+    <span>Day 01</span>
+  </div>
+  <h1>[Day 01] 가압송수장치 펌프 성능시험 및 점검표 실무</h1>
+  <h2>1. 마인드맵 구조화</h2>
+  <pre>
+[가압송수장치 성능시험]
+  ├── 1. 법정 판정기준 ── [체절운전: P ≤ 140% / 정격(100%Q): P ≥ 100% / 피크(150%Q): P ≥ 65%]
+  ├── 2. 배관 구성기준 ── [유량계: 정격 175% 측정 / 직관부: 전 8D, 후 5D / 순환배관: 20mm 이상]
+  ├── 3. 릴리프 세팅 ──── [작동점: 체절압력 미만 개방 / 배수구 노출 배관 / 수온상승 방지]
+  └── 4. 실무 조작절차 ── [주배관 차단 ──► 체절(무부하) ──► 정격(100%) ──► 피크(150%) ──► 복구]
+  </pre>
+  <h2>2. 핵심 암기 공식 & 두문자 연상 훅</h2>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">① 펌프 성능 판정 기준</div>
+      <strong>"체-140, 백-백, 백오-육오"</strong><br>
+      • 체절운전: 압력 <span class="highlight">140% 이하</span><br>
+      • 정격부하(100%Q): 압력 <span class="highlight">100% 이상</span><br>
+      • 피크부하(150%Q): 압력 <span class="highlight">65% 이상</span>
+    </div>
+    <div class="card">
+      <div class="card-title">② 시험배관 규격 기준</div>
+      <strong>"앞-팔, 뒤-오, 칠오 유량계, 이십 순환"</strong><br>
+      • 유량계 전단: 직관부 <span class="highlight">8D 이상</span><br>
+      • 유량계 후단: 직관부 <span class="highlight">5D 이상</span><br>
+      • 유량계 스케일: 정격의 <span class="highlight">175% 이상</span><br>
+      • 순환배관 구경: <span class="highlight">20 mm 이상</span>
+    </div>
+  </div>
+  <h2>3. 점검표 작성 실무 (소방청 매뉴얼 표준 판정)</h2>
+  <table>
+    <thead>
+      <tr><th>점검 항목</th><th>점검 요령</th><th>양호 기준 (NFTC 102)</th><th>불량 판정 사례</th></tr>
+    </thead>
+    <tbody>
+      <tr><td style="text-align:center;"><strong>체절운전</strong></td><td>주배관 폐쇄 후 무부하 기동</td><td>정격토출압력의 <strong>140% 이하</strong></td><td>140% 초과 (과설계 또는 임펠러 불량)</td></tr>
+      <tr><td style="text-align:center;"><strong>릴리프밸브</strong></td><td>체절 상태 개방압력 측정</td><td><strong>체절압력 미만</strong>에서 방출</td><td>미작동 (펌프 수온 상승/케이싱 과열)</td></tr>
+      <tr><td style="text-align:center;"><strong>정격부하(100%)</strong></td><td>유량계 100% 지점 압력 확인</td><td>정격토출압력의 <strong>100% 이상</strong></td><td>100% 미달 (흡입측 폐쇄, 누설)</td></tr>
+      <tr><td style="text-align:center;"><strong>피크부하(150%)</strong></td><td>유량계 150% 지점 압력 확인</td><td>정격토출압력의 <strong>65% 이상</strong></td><td>65% 미달 (고유량 양정 급락)</td></tr>
+    </tbody>
+  </table>
+  <h2>4. 실전 계산형 점검 기출</h2>
+  <div class="exam-box">
+    <strong>[문제]</strong> 옥내소화전 펌프(정격 400 L/min, 양정 0.7 MPa) 시험 시 150%(600 L/min)에서 0.42 MPa 측정 시 판정?<br>
+    <strong>[답안]</strong> 판정기준(0.7 × 0.65 = <strong>0.455 MPa 이상</strong>) &gt; 측정값(0.42 MPa) ──► <strong>[불 량]</strong>
+  </div>
+</body>
+</html>
