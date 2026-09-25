@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>소방시설관리사 2차 점검실무 - Day 02 옥내소화전설비 배관·감압장치 및 방수압·방수량 실무</title>
+  <style>
+    @page { size: A4 portrait; margin: 14mm; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; line-height: 1.45; color: #111; font-size: 10.2pt; margin: 0; padding: 16px; background: #fff; }
+    .header-box { border: 1.5pt solid #222; padding: 6px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; font-size: 8.8pt; background-color: #f8f9fa; font-weight: bold; }
+    h1 { font-size: 15.5pt; border-bottom: 2pt solid #003366; padding-bottom: 4px; margin: 4px 0 10px 0; color: #003366; }
+    h2 { font-size: 11.2pt; background-color: #e9ecef; padding: 4px 8px; margin: 12px 0 6px 0; border-left: 4pt solid #003366; }
+    table { width: 100%; border-collapse: collapse; margin: 6px 0 10px 0; font-size: 9.2pt; }
+    th, td { border: 1pt solid #444; padding: 5px 7px; vertical-align: middle; }
+    th { background-color: #f1f3f5; text-align: center; font-weight: 600; }
+    pre { background-color: #f8f9fa; border: 1pt solid #ccc; padding: 7px; font-family: monospace; font-size: 8.6pt; line-height: 1.35; margin: 4px 0 8px 0; white-space: pre-wrap; }
+    .mask { background-color: #212529; color: #212529; border-radius: 3px; padding: 1px 4px; cursor: pointer; user-select: none; }
+    .mask:hover { background-color: #495057; }
+    .mask.revealed { background-color: #fff3bf; color: #d9480f; font-weight: bold; border: 1px solid #ffd43b; }
+    .toggle-bar { margin-bottom: 10px; display: flex; gap: 8px; }
+    .toggle-btn { padding: 5px 12px; font-size: 8.5pt; font-weight: bold; border: 1px solid #003366; background: #003366; color: #fff; border-radius: 4px; cursor: pointer; }
+    .toggle-btn-sub { background: #fff; color: #003366; }
+    .answer-block { border: 1.5pt solid #0b7285; background-color: #f1fcfc; padding: 8px 12px; margin: 8px 0; font-size: 9.3pt; border-radius: 4px; }
+    .answer-block strong { color: #0b7285; }
+    .manual-box { border: 1pt solid #ced4da; background-color: #f8f9fa; padding: 8px 12px; margin: 6px 0; font-size: 9pt; border-radius: 4px; }
+    @media print {
+      .toggle-bar, .no-print { display: none !important; }
+      .mask { background-color: transparent !important; color: #111 !important; }
+      body { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-box">
+    <span>[2027 소방시설관리사 2차] 점검실무행정 (소방청 매뉴얼 1권 제3절 / 점검표 2-C, 2-E)</span>
+    <span>기준확인일: 2026.07.01 개정 반영 (검증: 2026-09-26)</span>
+  </div>
+
+  <div class="toggle-bar no-print">
+    <button class="toggle-btn" onclick="toggleAllMasks()">💡 전체 빈칸 보이기 / 가리기</button>
+    <button class="toggle-btn toggle-btn-sub" onclick="window.print()">🖨️ A4 출력 / PDF 저장</button>
+    <span style="font-size: 8.5pt; color: #6c757d; align-self: center;">* 검은 상자를 누르면 개별 정답이 표시됩니다.</span>
+  </div>
+
+  <h1>[Day 02] 옥내소화전 배관·감압장치 및 방수압·방수량 실무</h1>
+
+  <h2>1. 머릿속 인출 마인드맵 (수치 및 계통 구조화)</h2>
+  <pre>
+[옥내소화전설비 배관 및 방수계통]
+  ├── 1. 방수성능 기준 ── [방수압력: <span class="mask">0.17 MPa 이상 0.7 MPa 이하</span> / 방수량: <span class="mask">130 L/min 이상</span>]
+  ├── 2. 배관 구경 기준 ── [주배관 유속: <span class="mask">4 m/s 이하</span> / 수직배관: <span class="mask">50㎜ 이상</span> / 가지배관: <span class="mask">40㎜ 이상</span>]
+  │                       (호스릴 방식: 수직배관 <span class="mask">32㎜ 이상</span>, 가지배관 <span class="mask">25㎜ 이상</span>)
+  ├── 3. 감압장치 설치 ── [설치기준: 노즐선단 압력 <span class="mask">0.7 MPa 초과 시</span> / 종류: <span class="mask">감압밸브, 감압오리피스</span>]
+  └── 4. 밸브 설치 기준 ── [급수개폐밸브: <span class="mask">개폐표시형(OS&Y 등)</span> / 흡입측 배관: <span class="mask">버터플라이밸브 설치 금지</span>]
+  </pre>
+
+  <h2>2. 소방청 매뉴얼 피토게이지(방수압) 측정 원리도</h2>
+  <pre>
+        [옥내소화전 방수노즐] (구경 D = 13㎜)
+        ┌──────────────────┐
+        │                  │========►  [방수류 방출: Q]
+        └──────────────────┘     ▲
+           │◄─── D/2 ───►│       │
+                (6.5㎜)          ▼
+                           ┌───────────┐
+                           │ 피토게이지 │ ──► 동압(방수압력 P) 측정
+                           └───────────┘
+  * [측정 원리]: 노즐 선단 오리피스를 통과하며 단면적이 최소가 되는 축류부(Vena Contracta)가
+    노즐 직경의 약 D/2 지점에 형성되며, 이곳에서 동압이 최대가 되므로 D/2 떨어진 지점 중심선에서 측정함.
+  </pre>
+
+  <h2>3. 소방시설 자체점검표(2-C, 2-E) 서식 연계 점검 기준</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 17%;">점검표 항목</th>
+        <th style="width: 33%;">소방청 매뉴얼 점검 요령 및 측정 절차</th>
+        <th style="width: 25%;">양호 기준 (NFTC 102)</th>
+        <th style="width: 25%;">주요 불량 판정 사례</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center;"><strong>방수압 및 방수량<br>(2-C-002)</strong></td>
+        <td>최원격 소화전 개방(동시 2개) 후 직사형 관창(13㎜) 선단 D/2 위치에서 피토게이지 측정</td>
+        <td>방수압: <strong><span class="mask">0.17 ~ 0.7 MPa</span></strong><br>방수량: <strong><span class="mask">130 L/min 이상</span></strong></td>
+        <td>• 0.17 MPa 미달 (펌프양정 부족)<br>• 0.7 MPa 초과 (반동력 과대)</td>
+      </tr>
+      <tr>
+        <td style="text-align: center;"><strong>감압장치 설치<br>(2-C-003)</strong></td>
+        <td>펌프와 인접한 저층부 소화전 방수구의 정압 및 동압 측정 확인</td>
+        <td>방수압력이 <strong><span class="mask">0.7 MPa 초과 시</span></strong><br>호스접결구 인입측 감압장치 설치</td>
+        <td>감압밸브 미설치로 0.7 MPa 초과<br>(호스 파손 및 조작자 전도 위험)</td>
+      </tr>
+      <tr>
+        <td style="text-align: center;"><strong>급수개폐밸브<br>(2-E-005)</strong></td>
+        <td>급수배관 밸브의 개폐식별 구조 및 펌프 흡입측 밸브 형식 육안 확인</td>
+        <td>• 급수배관: <strong><span class="mask">개폐표시형</span></strong><br>• 흡입측: <strong><span class="mask">버터플라이 외의 것</span></strong></td>
+        <td>펌프 흡입측에 버터플라이 설치<br>(와류로 인한 공동현상 캐비테이션)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>4. 시험지에 그대로 쓸 모범 서술형 답안 블록</h2>
+  <div class="answer-block">
+    <strong>[모범 답안 1: 옥내소화전설비 배관 구경 설치기준 (NFTC 102 2.3)]</strong><br>
+    펌프의 토출측 주배관의 구경은 유속이 <span class="mask">4 m/s 이하</span>가 될 수 있는 크기 이상으로 하여야 하고, 옥내소화전 방수구와 연결되는 가지배관의 구경은 <span class="mask">40㎜ 이상</span>(호스릴은 25㎜ 이상), 주배관 중 수직배관의 구경은 <span class="mask">50㎜ 이상</span>(호스릴은 32㎜ 이상)으로 하여야 한다. 연결송수관설비 배관과 겸용할 경우 주배관은 <span class="mask">100㎜ 이상</span>, 방수구 연결배관은 <span class="mask">65㎜ 이상</span>이어야 한다.
+  </div>
+
+  <div class="answer-block">
+    <strong>[모범 답안 2: 방수압력 0.7 MPa 초과 시 감압 방법 2가지 (소방청 매뉴얼)]</strong><br>
+    1. <strong>감압오리피스 방식:</strong> 방수구 인입측에 고정 오리피스를 설치하여 유동 마찰저항으로 동압을 감압하는 방식.<br>
+    2. <strong>감압밸브(직동식/조정형) 방식:</strong> 1차측 고압을 다이어프램 스프링 밸런스를 통해 2차측을 일정한 설정압력(0.7 MPa 이하)으로 감압 유지하는 방식.
+  </div>
+
+  <h2>5. 실전 방수량 계산형 기출 (매뉴얼 공식 연계)</h2>
+  <div class="manual-box">
+    <strong>[문제]</strong> 현장 점검 중 옥내소화전(노즐 구경 13㎜) 선단에서 피토게이지로 측정한 방수압력이 <strong>0.25 MPa</strong>이었다. 이때의 분당 방수량(L/min)을 계산하고 법정 기준 적합 여부를 판정하시오.<br><br>
+    <strong>[산출식]</strong> $Q = 2.086 \times D^2 \times \sqrt{P}$<br>
+    • $Q = 2.086 \times (13)^2 \times \sqrt{0.25} = 2.086 \times 169 \times 0.5 \approx$ <strong><span class="mask">176.27 L/min</span></strong><br>
+    • 판정: 법정 최소 방수량 기준(130 L/min 이상)을 만족하므로 <strong><span class="mask">[ 적 합 (양호) ]</span></strong>
+  </div>
+
+  <script>
+    document.querySelectorAll('.mask').forEach(el => {
+      el.addEventListener('click', () => el.classList.toggle('revealed'));
+    });
+    let allRevealed = false;
+    function toggleAllMasks() {
+      allRevealed = !allRevealed;
+      document.querySelectorAll('.mask').forEach(el => {
+        if (allRevealed) el.classList.add('revealed');
+        else el.classList.remove('revealed');
+      });
+    }
+  </script>
+</body>
+</html>

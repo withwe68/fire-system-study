@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>소방시설관리사 2차 점검실무 - Day 03 옥내소화전 수원량 산정 및 옥상수조 실무</title>
+  <style>
+    @page { size: A4 portrait; margin: 14mm; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; line-height: 1.45; color: #111; font-size: 10.2pt; margin: 0; padding: 16px; background: #fff; }
+    .header-box { border: 1.5pt solid #222; padding: 6px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; font-size: 8.8pt; background-color: #f8f9fa; font-weight: bold; }
+    h1 { font-size: 15.5pt; border-bottom: 2pt solid #003366; padding-bottom: 4px; margin: 4px 0 10px 0; color: #003366; }
+    h2 { font-size: 11.2pt; background-color: #e9ecef; padding: 4px 8px; margin: 12px 0 6px 0; border-left: 4pt solid #003366; }
+    table { width: 100%; border-collapse: collapse; margin: 6px 0 10px 0; font-size: 9.2pt; }
+    th, td { border: 1pt solid #444; padding: 5px 7px; vertical-align: middle; }
+    th { background-color: #f1f3f5; text-align: center; font-weight: 600; }
+    pre { background-color: #f8f9fa; border: 1pt solid #ccc; padding: 7px; font-family: monospace; font-size: 8.6pt; line-height: 1.35; margin: 4px 0 8px 0; white-space: pre-wrap; }
+    .mask { background-color: #212529; color: #212529; border-radius: 3px; padding: 1px 4px; cursor: pointer; user-select: none; }
+    .mask:hover { background-color: #495057; }
+    .mask.revealed { background-color: #fff3bf; color: #d9480f; font-weight: bold; border: 1px solid #ffd43b; }
+    .toggle-bar { margin-bottom: 10px; display: flex; gap: 8px; }
+    .toggle-btn { padding: 5px 12px; font-size: 8.5pt; font-weight: bold; border: 1px solid #003366; background: #003366; color: #fff; border-radius: 4px; cursor: pointer; }
+    .toggle-btn-sub { background: #fff; color: #003366; }
+    .answer-block { border: 1.5pt solid #0b7285; background-color: #f1fcfc; padding: 8px 12px; margin: 8px 0; font-size: 9.3pt; border-radius: 4px; }
+    .answer-block strong { color: #0b7285; }
+    .reason-box { border: 1pt solid #ffa8a8; background: #fff5f5; padding: 6px 10px; font-size: 8.8pt; margin: 6px 0; border-radius: 4px; }
+    @media print {
+      .toggle-bar, .no-print { display: none !important; }
+      .mask { background-color: transparent !important; color: #111 !important; }
+      body { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-box">
+    <span>[2027 소방시설관리사 2차] 점검실무행정 (소방청 매뉴얼 1권 51~53p / 해설서 부록 A-수원)</span>
+    <span>기준확인일: 2026.07.01 개정 반영 (검증: 2026-09-26)</span>
+  </div>
+
+  <div class="toggle-bar no-print">
+    <button class="toggle-btn" onclick="toggleAllMasks()">💡 전체 빈칸 보이기 / 가리기</button>
+    <button class="toggle-btn toggle-btn-sub" onclick="window.print()">🖨️ A4 출력 / PDF 저장</button>
+    <span style="font-size: 8.5pt; color: #6c757d; align-self: center;">* 검은 상자를 누르면 개별 정답이 표시됩니다.</span>
+  </div>
+
+  <h1>[Day 03] 옥내소화전설비 수원량 산정 및 옥상수조 실무</h1>
+
+  <h2>1. 머릿속 인출 마인드맵 (수원 및 수조 계통)</h2>
+  <pre>
+[옥내소화전설비 수원 및 수조]
+  ├── 1. 주된 수원량 ─── [N(최대 2개) × <span class="mask">2.6㎥</span>] (30~49층: <span class="mask">5.2㎥</span>, 50층 이상: <span class="mask">7.8㎥</span>)
+  ├── 2. 옥상수조(2차) ── [유효수량의 <span class="mask">3분의 1 이상</span> 옥상 설치] ◄── [설치제외: 지·고·최·십·예·수·가]
+  ├── 3. 겸용수조 유효수량 [<span class="mask">타 배관 흡수구 하단</span> ~ <span class="mask">소화배관 흡수구 상단</span> 사이 수량]
+  └── 4. 수조 부대설비 ── [수위계 / 고정사다리 / 조명 / 배수관 / 표지(수조·배관) / 자동급수]
+  </pre>
+
+  <h2>2. 소방청 매뉴얼 겸용수조 유효수량 판정 단면도</h2>
+  <pre>
+       ┌──────────────────────────────────────────────┐
+       │ [수조 최고수위 (Overflow 라인)]               │
+       │                                              │
+       │ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  │ ◄── [일반용수 펌프 흡수구 하단]
+       │ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ │
+       │ ░░░░░░░░░░  [ 소화설비 전용 유효수량 ]  ░░░░░░░░ │ ──► 일반용수 흡수 불가 구간
+       │ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ │
+       │ ──────────────────────────────────────────── │ ◄── [소화용수 펌프 풋밸브/흡수구 상단]
+       │  (사수량 Dead Water: 바닥~흡수구 상단 구간)   │ ──► 유효수량 산정 제외!
+       └──────────────────────────────────────────────┘
+  </pre>
+
+  <div class="reason-box">
+    💡 <strong>해설서 기술적 배경 (공학 원리):</strong><br>
+    유효수량을 "소화배관 흡수구 상단"까지만 인정하는 이유는 수위가 흡수구 상단보다 낮아지면 수면에 소용돌이(와류, Vortex)가 형성되어 배관 내부로 공기가 빨려 들어가는 <strong>에어바운딩 및 펌프 캐비테이션(공동현상)</strong>이 발생하여 송수가 중단되기 때문입니다.
+  </div>
+
+  <h2>3. 소방시설 자체점검표(2-A, 2-B) 서식 연계 점검 기준</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 17%;">점검표 항목</th>
+        <th style="width: 33%;">소방청 매뉴얼 점검 요령 및 측정 절차</th>
+        <th style="width: 25%;">양호 기준 (NFTC 102)</th>
+        <th style="width: 25%;">주요 불량 판정 사례</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center;"><strong>주된 수원의<br>유효수량 (2-A-001)</strong></td>
+        <td>최대 층 소화전 개수 확인 및 수조 내부 일반·소화배관 레벨 실측</td>
+        <td>$N \times$ <strong><span class="mask">2.6㎥ 이상</span></strong><br>(타배관하단~소화배관상단)</td>
+        <td>• 유효수량 법정 기준 미달<br>• 일반배관이 바닥까지 내려가 겸용 침범</td>
+      </tr>
+      <tr>
+        <td style="text-align: center;"><strong>보조수원(옥상)<br>확보 여부 (2-A-002)</strong></td>
+        <td>주된 옥상에 보조수조 설치 여부 및 법정 제외 대상 해당 여부 확인</td>
+        <td>주된 수원 유효수량의<br><strong><span class="mask">3분의 1 이상</span></strong> 확보</td>
+        <td>제외 대상이 아님에도 옥상수조 미설치 (중대 결함 지적)</td>
+      </tr>
+      <tr>
+        <td style="text-align: center;"><strong>수조 부대설비<br>(2-B-001~007)</strong></td>
+        <td>수위계 지침 정상 여부, 고정사다리(상단>바닥), 조명설비, 배수밸브 점검</td>
+        <td>외측 수위계·고정사다리·<br>배수밸브·표지 설치 완비</td>
+        <td>수위계 파손으로 수위 미확인, 청소용 배수밸브 미설치</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>4. 시험지에 그대로 쓸 모범 서술형 답안 블록</h2>
+  <div class="answer-block">
+    <strong>[모범 답안 1: 옥상수조(보조수원) 설치 제외 기준 (NFTC 102 2.1)]</strong><br>
+    1. <span class="mask">지하층만 있는 건축물</span><br>
+    2. <span class="mask">고가수조를 가압송수장치로 설치한 경우</span><br>
+    3. <span class="mask">수원이 건축물의 최상층에 설치된 방수구보다 높은 위치에 설치된 경우</span><br>
+    4. <span class="mask">건축물의 높이가 지표면으로부터 10m 이하인 경우</span><br>
+    5. <span class="mask">주펌프와 동등 이상의 성능이 있는 별도의 펌프로서 내연기관의 기동과 연동하여 작동되거나 비상전원을 연결하여 설치한 경우</span>
+  </div>
+
+  <div class="answer-block">
+    <strong>[모범 답안 2: 다른 설비와 겸용하는 수조의 유효수량 산정 기준 (해설서 공통수원)]</strong><br>
+    소화설비용 수조를 일반 급수설비 등 다른 설비와 겸용하여 설치하는 경우, 유효수량은 <span class="mask">다른 설비의 풋밸브·흡수구의 하단</span>과 <span class="mask">소화설비용 풋밸브·흡수구의 상단</span> 사이의 수량으로 산정한다.
+  </div>
+
+  <h2>5. 실전 수원량 계산형 기출 (매뉴얼 예시 연계)</h2>
+  <div class="reason-box" style="background:#fff; border-color:#ced4da;">
+    <strong>[문제]</strong> 지하 2층, 지상 15층 규모의 사무실 건물에서 옥내소화전이 1~10층에는 층당 3개, 11~15층에는 층당 2개가 설치되어 있다. 
+    이 건물의 주된 수원량(1차)과 옥상수조(보조수원)의 최소 유효수량을 각각 계산하시오.<br><br>
+    <strong>[풀이 및 산출]</strong><br>
+    1. 층수 기준 적용: 30층 미만이므로 소화전 1개당 <span class="mask">2.6㎥</span> 적용 (설치개수 N은 최대 2개 적용)<br>
+    2. 주된 수원량(1차): $2 \text{개} \times 2.6\,\text{m}^3 =$ <strong><span class="mask">5.2㎥ 이상</span></strong><br>
+    3. 옥상수조 수원량(2차): 주된 수원의 1/3 이상이므로 $5.2\,\text{m}^3 \times \frac{1}{3} \approx$ <strong><span class="mask">1.74㎥ 이상</span></strong>
+  </div>
+
+  <script>
+    document.querySelectorAll('.mask').forEach(el => {
+      el.addEventListener('click', () => el.classList.toggle('revealed'));
+    });
+    let allRevealed = false;
+    function toggleAllMasks() {
+      allRevealed = !allRevealed;
+      document.querySelectorAll('.mask').forEach(el => {
+        if (allRevealed) el.classList.add('revealed');
+        else el.classList.remove('revealed');
+      });
+    }
+  </script>
+</body>
+</html>
