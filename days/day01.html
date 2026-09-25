@@ -4,122 +4,23 @@
   <meta charset="UTF-8">
   <title>소방시설관리사 2차 점검실무 - Day 01 가압송수장치 펌프 성능시험</title>
   <style>
-    @page {
-      size: A4 portrait;
-      margin: 14mm 14mm 14mm 14mm;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif;
-      line-height: 1.45;
-      color: #111;
-      font-size: 10.2pt;
-      margin: 0;
-      padding: 16px;
-      background: #fff;
-    }
-    .header-box {
-      border: 1.5pt solid #222;
-      padding: 6px 12px;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 8.8pt;
-      background-color: #f8f9fa;
-      font-weight: bold;
-    }
-    h1 {
-      font-size: 15.5pt;
-      border-bottom: 2pt solid #003366;
-      padding-bottom: 4px;
-      margin: 4px 0 10px 0;
-      color: #003366;
-    }
-    h2 {
-      font-size: 11.2pt;
-      background-color: #e9ecef;
-      padding: 4px 8px;
-      margin: 12px 0 6px 0;
-      border-left: 4pt solid #003366;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 6px 0 10px 0;
-      font-size: 9.2pt;
-    }
-    th, td {
-      border: 1pt solid #444;
-      padding: 5px 7px;
-      vertical-align: middle;
-    }
-    th {
-      background-color: #f1f3f5;
-      text-align: center;
-      font-weight: 600;
-    }
-    pre {
-      background-color: #f8f9fa;
-      border: 1pt solid #ccc;
-      padding: 7px;
-      font-family: monospace;
-      font-size: 8.6pt;
-      line-height: 1.35;
-      margin: 4px 0 8px 0;
-      white-space: pre-wrap;
-    }
-    .mask {
-      background-color: #212529;
-      color: #212529;
-      border-radius: 3px;
-      padding: 1px 4px;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.15s ease;
-    }
-    .mask:hover {
-      background-color: #495057;
-    }
-    .mask.revealed {
-      background-color: #fff3bf;
-      color: #d9480f;
-      font-weight: bold;
-      border: 1px solid #ffd43b;
-    }
-    .toggle-bar {
-      margin-bottom: 10px;
-      display: flex;
-      gap: 8px;
-    }
-    .toggle-btn {
-      padding: 5px 12px;
-      font-size: 8.5pt;
-      font-weight: bold;
-      border: 1px solid #003366;
-      background: #003366;
-      color: #fff;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .toggle-btn-sub {
-      background: #fff;
-      color: #003366;
-    }
-    .revision-box {
-      border: 1pt solid #ffa8a8;
-      background: #fff5f5;
-      padding: 6px 10px;
-      font-size: 8.8pt;
-      margin: 6px 0;
-      border-radius: 4px;
-    }
-    .answer-block {
-      border: 1.5pt solid #0b7285;
-      background-color: #f1fcfc;
-      padding: 8px 12px;
-      margin: 8px 0;
-      font-size: 9.3pt;
-      border-radius: 4px;
-    }
+    @page { size: A4 portrait; margin: 14mm; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; line-height: 1.45; color: #111; font-size: 10.2pt; margin: 0; padding: 16px; background: #fff; }
+    .header-box { border: 1.5pt solid #222; padding: 6px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; font-size: 8.8pt; background-color: #f8f9fa; font-weight: bold; }
+    h1 { font-size: 15.5pt; border-bottom: 2pt solid #003366; padding-bottom: 4px; margin: 4px 0 10px 0; color: #003366; }
+    h2 { font-size: 11.2pt; background-color: #e9ecef; padding: 4px 8px; margin: 12px 0 6px 0; border-left: 4pt solid #003366; }
+    table { width: 100%; border-collapse: collapse; margin: 6px 0 10px 0; font-size: 9.2pt; }
+    th, td { border: 1pt solid #444; padding: 5px 7px; vertical-align: middle; }
+    th { background-color: #f1f3f5; text-align: center; font-weight: 600; }
+    pre { background-color: #f8f9fa; border: 1pt solid #ccc; padding: 7px; font-family: monospace; font-size: 8.6pt; line-height: 1.35; margin: 4px 0 8px 0; white-space: pre-wrap; }
+    .mask { background-color: #212529; color: #212529; border-radius: 3px; padding: 1px 4px; cursor: pointer; user-select: none; }
+    .mask:hover { background-color: #495057; }
+    .mask.revealed { background-color: #fff3bf; color: #d9480f; font-weight: bold; border: 1px solid #ffd43b; }
+    .toggle-bar { margin-bottom: 10px; display: flex; gap: 8px; }
+    .toggle-btn { padding: 5px 12px; font-size: 8.5pt; font-weight: bold; border: 1px solid #003366; background: #003366; color: #fff; border-radius: 4px; cursor: pointer; }
+    .toggle-btn-sub { background: #fff; color: #003366; }
+    .revision-box { border: 1pt solid #0b7285; background: #f1fcfc; padding: 6px 10px; font-size: 8.8pt; margin: 6px 0; border-radius: 4px; }
+    .answer-block { border: 1.5pt solid #0b7285; background-color: #f1fcfc; padding: 8px 12px; margin: 8px 0; font-size: 9.3pt; border-radius: 4px; }
     .answer-block strong { color: #0b7285; }
     @media print {
       .toggle-bar, .no-print { display: none !important; }
@@ -131,29 +32,31 @@
 <body>
 
   <div class="header-box">
-    <span>[2027 소방시설관리사 2차] 점검실무행정 (소방시설 자체점검표 3-C / NFTC 102·103)</span>
+    <span>[2027 소방시설관리사 2차] 점검실무행정 (소방청 매뉴얼 1권 85~87p / 해설서 1권 79~83p)</span>
     <span>기준확인일: 2026.07.01 개정 반영 (검증: 2026-09-26)</span>
   </div>
 
   <div class="toggle-bar no-print">
     <button class="toggle-btn" onclick="toggleAllMasks()">💡 전체 빈칸 보이기 / 가리기</button>
     <button class="toggle-btn toggle-btn-sub" onclick="window.print()">🖨️ A4 출력 / PDF 저장</button>
-    <span style="font-size: 8.5pt; color: #6c757d; align-self: center;">* 검은색 상자를 클릭하면 개별 정답이 인출됩니다.</span>
+    <span style="font-size: 8.5pt; color: #6c757d; align-self: center;">* 검은 상자를 누르면 개별 정답이 표시됩니다.</span>
   </div>
 
-  <h1>[Day 01] 가압송수장치 펌프 성능시험 및 점검표 실무</h1>
+  <h1>[Day 01] 가압송수장치 펌프 성능시험 및 릴리프밸브 점검</h1>
 
-  <h2>1. 머릿속 인출 마인드맵 (위치 및 수치 구조화)</h2>
+  <h2>1. 머릿속 인출 마인드맵 (수치 및 계통 구조화)</h2>
   <pre>
 [가압송수장치 성능시험]
-  ├── 1. 성능기준 판정 ─── [체절: P ≤ <span class="mask">140%</span> / 100%Q: P ≥ <span class="mask">100%</span>(실무) / 150%Q: P ≥ <span class="mask">65%</span>]
+  ├── 1. 성능기준 판정 ─── [체절: P ≤ <span class="mask">140%</span> / 100%Q: P ≥ <span class="mask">100%</span>(매뉴얼실무) / 150%Q: P ≥ <span class="mask">65%</span>]
   ├── 2. 순환배관 기준 ─── [분기: <span class="mask">체크밸브와 펌프 사이</span> / 구경: <span class="mask">20㎜ 이상</span> / 밸브: <span class="mask">체절압력 미만 개방</span>]
   ├── 3. 성능시험배관 ─── [분기: <span class="mask">체크밸브 이전</span> / 유량계: <span class="mask">정격의 175% 이상</span> 측정]
-  └── 4. 직관부 기준 ───── [전·후단 직관부: <span class="mask">해당 유량측정장치 제조사의 설치사양</span>에 따름]
+  └── 4. 직관부 기준 ───── [법정기준: <span class="mask">해당 유량측정장치 제조사의 설치사양</span> (해설서 예시: 전단 8D, 후단 5D)]
   </pre>
 
   <div class="revision-box">
-    ⚠️ <strong>개정 기준 확인 (수험 유의):</strong> 과거 기준의 직관부 "전단 8D, 후단 5D" 규정은 삭제되었으며, 현행 NFTC 102/103은 <strong>"해당 유량측정장치 제조사의 설치사양에 따를 것"</strong>으로 규정되어 있습니다. (제24회 기출 해설 기준 문구)
+    📘 <strong>기준 조문 vs 해설서 기술적 구분 (수험 답안 작성 요령):</strong><br>
+    • <strong>답안 서술 기준:</strong> 현행 NFTC 102/103 법정 문구는 <strong>"해당 유량측정장치 제조사의 설치사양에 따를 것"</strong>입니다. (제24회 관리사 2차 해설 반영)<br>
+    • <strong>해설서 설계 배경:</strong> 유량계 내부에서 층류(Laminar Flow)를 형성하여 유량 오차를 줄이기 위한 일반적인 시공 권장 사양이 <strong>전단 직관부 8D 이상, 후단 직관부 5D 이상</strong>입니다.
   </div>
 
   <h2>2. 펌프 주위 배관계통 및 점검 밸브 위치도</h2>
@@ -168,44 +71,35 @@
                ┌──────────────┴───────────────────────────┐
                │ [순환배관 분기점: 체크밸브와 펌프 사이]  │ [성능시험배관 분기]
                │                                          │
-               ├── [구경 20㎜ 이상의 배관]               ├── [ ③ 성능 개폐밸브 ]
+               ├── [구경 20㎜ 이상의 배관]               ├── [ ③ 성능 개폐밸브 ] (전개)
                │   │                                      │
   [가압송수펌프]──┤   ▼                                  ▼
                │  [릴리프밸브] (체절압력 미만 개방)     [ ④ 유량측정장치 ] (정격의 175% 측정)
                │                                          │ (직관부: 제조사 설치사양)
-               └──────────────────────────────────────────┼── [ ⑤ 유량조절밸브 ]
+               └──────────────────────────────────────────┼── [ ⑤ 유량조절밸브 ] (미세 개방)
                                                           │
                                                           ▼ [배수구 간접배수]
   </pre>
 
-  <h2>3. 핵심 두문자 암기 공식</h2>
-  <pre>
-• 성능판정 공식: "체-140, 백-백, 백오-육오"
-  (체절압력 <span class="mask">140% 이하</span>, 정격유량 시 토출압력 <span class="mask">100% 이상</span>, 150% 유량 시 토출압력 <span class="mask">65% 이상</span>)
-
-• 순환배관 공식: "체·펌 분기, 이십 미리, 체절 미만"
-  (<span class="mask">체크밸브와 펌프 사이</span>에서 분기, 구경 <span class="mask">20㎜ 이상</span>, <span class="mask">체절압력 미만</span> 개방)
-  </pre>
-
-  <h2>4. 소방시설 자체점검표(3-C) 서식 연계 점검 기준</h2>
+  <h2>3. 소방시설 자체점검표(2-C-004, 2-E-003) 서식 연계 점검 기준</h2>
   <table>
     <thead>
       <tr>
         <th style="width: 18%;">점검표 항목</th>
-        <th style="width: 32%;">점검 요령 및 측정 절차</th>
+        <th style="width: 32%;">소방청 매뉴얼 점검 요령 및 측정 절차</th>
         <th style="width: 25%;">양호 기준 (출처 구분)</th>
-        <th style="width: 25%;">불량 판정 사례</th>
+        <th style="width: 25%;">주요 불량 판정 사례</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td style="text-align: center;"><strong>체절운전 시험<br>(무부하)</strong></td>
+        <td style="text-align: center;"><strong>체절운전 시험<br>(2-C-004)</strong></td>
         <td>주배관 제어밸브 및 유량조절밸브 폐쇄 상태에서 수동 기동 후 토출압력 확인</td>
         <td>정격토출압력의 <br><strong><span class="mask">140% 이하</span></strong><br>(NFTC 102 본문)</td>
         <td><strong>140% 초과</strong><br>(임펠러 변형, 펌프 양정 과설계)</td>
       </tr>
       <tr>
-        <td style="text-align: center;"><strong>순환배관 및<br>릴리프밸브</strong></td>
+        <td style="text-align: center;"><strong>순환배관 및<br>릴리프밸브(2-E-003)</strong></td>
         <td>체크밸브와 펌프 사이 분기 여부, 배관 구경 확인 및 체절 시 개방 압력 확인</td>
         <td>구경 <strong><span class="mask">20㎜ 이상</span></strong>,<br><strong><span class="mask">체절압력 미만</span></strong> 개방<br>(NFTC 102 본문)</td>
         <td><strong>미작동</strong> 또는 정격압력 이하 조기 개방 (수온상승·압력저하)</td>
@@ -213,7 +107,7 @@
       <tr>
         <td style="text-align: center;"><strong>정격부하 운전<br>(100% 부하)</strong></td>
         <td>성능개폐밸브 개방 후 유량조절밸브로 정격토출량(100%)을 맞춘 후 압력 확인</td>
-        <td>정격토출압력의 <br><strong><span class="mask">100% 이상</span></strong><br>(자체점검 매뉴얼 실무)</td>
+        <td>정격토출압력의 <br><strong><span class="mask">100% 이상</span></strong><br>(점검매뉴얼 실무)</td>
         <td><strong>100% 미달</strong><br>(흡입측 스트레이너 폐쇄, 임펠러 마모)</td>
       </tr>
       <tr>
@@ -225,7 +119,7 @@
     </tbody>
   </table>
 
-  <h2>5. 시험지에 그대로 쓸 모범 서술형 답안 블록</h2>
+  <h2>4. 시험지에 그대로 쓸 모범 서술형 답안 블록</h2>
   <div class="answer-block">
     <strong>[모범 답안 1: 순환배관 설치기준 (NFTC 102 2.2.1)]</strong><br>
     가압송수장치의 수온상승을 방지하기 위하여 <span class="mask">체크밸브와 펌프 사이</span>에서 분기한 <span class="mask">구경 20㎜ 이상</span>의 배관에, 체절운전 시 수온의 상승을 방지하기 위하여 <span class="mask">체절압력 미만</span>에서 개방되는 릴리프밸브를 설치하여야 한다.
@@ -236,7 +130,7 @@
     성능시험배관의 호칭지름은 <span class="mask">유량측정장치의 호칭지름</span>에 따르고, 유량측정장치 전·후단의 직관부 거리는 <span class="mask">해당 유량측정장치 제조사의 설치사양</span>에 따르며, 유량측정장치는 펌프 정격토출량의 <span class="mask">175% 이상</span>을 측정할 수 있는 것으로 설치하여야 한다.
   </div>
 
-  <h2>6. 실전 계산형 점검 기출 (용어 정정 반영)</h2>
+  <h2>5. 실전 계산형 점검 기출 (용어 정정 반영)</h2>
   <div class="revision-box" style="background:#fff; border-color:#adb5bd;">
     <strong>[문제]</strong> 정격토출량이 <strong>400 L/min</strong>이고, <strong>정격토출압력이 0.7 MPa</strong>인 옥내소화전 주펌프의 성능시험 결과 150% 유량(600 L/min)에서 토출압력이 0.42 MPa로 측정되었다. 판정 기준값을 제시하고 적합 여부를 판정하시오.<br><br>
     <strong>[풀이 및 판정]</strong><br>
@@ -247,20 +141,14 @@
 
   <script>
     document.querySelectorAll('.mask').forEach(el => {
-      el.addEventListener('click', () => {
-        el.classList.toggle('revealed');
-      });
+      el.addEventListener('click', () => el.classList.toggle('revealed'));
     });
-
     let allRevealed = false;
     function toggleAllMasks() {
       allRevealed = !allRevealed;
       document.querySelectorAll('.mask').forEach(el => {
-        if (allRevealed) {
-          el.classList.add('revealed');
-        } else {
-          el.classList.remove('revealed');
-        }
+        if (allRevealed) el.classList.add('revealed');
+        else el.classList.remove('revealed');
       });
     }
   </script>
