@@ -1,9 +1,33 @@
-﻿  <style>
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>소방시설관리사 2차 점검실무 - Day 02 옥내소화전설비 배관 및 방수성능</title>
+  <style>
     @page { size: A4 portrait; margin: 14mm; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; line-height: 1.45; color: #111; font-size: 10.2pt; margin: 0; padding: 12px; background: #fff; }
     .header-box { border: 1.5pt solid #222; padding: 6px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; font-size: 8.8pt; background-color: #f8f9fa; font-weight: bold; flex-wrap: wrap; gap: 4px; }
     h1 { font-size: 14pt; border-bottom: 2pt solid #003366; padding-bottom: 4px; margin: 4px 0 10px 0; color: #003366; }
     h2 { font-size: 11pt; background-color: #e9ecef; padding: 4px 8px; margin: 12px 0 6px 0; border-left: 4pt solid #003366; }
+
+    /* 3D 플립 암기카드 모바일 터치 최적화 */
+    .flashcard-section { margin: 12px 0 18px 0; }
+    .flip-card { background-color: transparent; width: 100%; height: 230px; perspective: 1000px; cursor: pointer; user-select: none; }
+    .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: left; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); }
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 10px; padding: 14px 18px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
+    .flip-card-front { background: linear-gradient(135deg, #003366 0%, #0b7285 100%); color: #ffffff; border: 1px solid #002244; }
+    .flip-card-back { background: #ffffff; color: #212529; transform: rotateY(180deg); border: 2px solid #0b7285; }
+    .card-tag { font-size: 8pt; font-weight: bold; padding: 3px 8px; border-radius: 4px; display: inline-block; width: fit-content; }
+    .card-tag-front { background: rgba(255,255,255,0.2); color: #fff; }
+    .card-tag-back { background: #e6fcf5; color: #0ca678; }
+    .card-q { font-size: 10.5pt; font-weight: bold; line-height: 1.4; margin-top: 4px; }
+    .card-hint { font-size: 8.8pt; color: #ffec99; }
+    .card-ans { font-size: 9.5pt; line-height: 1.5; color: #111; margin-top: 4px; }
+    .card-ans strong { color: #d9480f; }
+    .card-guide { font-size: 8pt; text-align: right; color: #868e96; }
+
     .table-wrapper { width: 100%; overflow-x: auto; margin: 6px 0 10px 0; -webkit-overflow-scrolling: touch; }
     table { width: 100%; min-width: 580px; border-collapse: collapse; font-size: 9pt; }
     th, td { border: 1pt solid #444; padding: 6px 8px; vertical-align: middle; }
@@ -19,13 +43,13 @@
     .toggle-btn-sub { background: #fff; color: #003366; }
     .answer-block { border: 1.5pt solid #0b7285; background-color: #f1fcfc; padding: 8px 12px; margin: 8px 0; font-size: 9.3pt; border-radius: 4px; }
     .answer-block strong { color: #0b7285; }
-    .reason-box { border: 1pt solid #ffa8a8; background: #fff5f5; padding: 8px 10px; font-size: 8.8pt; margin: 6px 0; border-radius: 4px; }
     .manual-box { border: 1pt solid #ced4da; background-color: #f8f9fa; padding: 8px 12px; margin: 6px 0; font-size: 9pt; border-radius: 4px; }
     @media (max-width: 640px) { body { padding: 8px; } .toggle-bar { flex-direction: column; } .toggle-btn { width: 100%; min-height: 44px; } }
-    @media print { .toggle-bar, .no-print { display: none !important; } .mask { background-color: transparent !important; color: #111 !important; } pre { white-space: pre-wrap; font-size: 8pt; } body { padding: 0; } }
+    @media print { .toggle-bar, .no-print, .flashcard-section { display: none !important; } .mask { background-color: transparent !important; color: #111 !important; } pre { white-space: pre-wrap; font-size: 8pt; } body { padding: 0; } }
   </style>
 </head>
-<body>  <div class="header-box">
+<body>
+  <div class="header-box">
     <span>[2027 소방시설관리사 2차] 점검실무행정 (소방청 매뉴얼 1권 83p / 점검표 2-C-002)</span>
     <span>기준확인일: 2026.07.01 개정 반영 (검증: 2026-09-26)</span>
   </div>
@@ -36,6 +60,33 @@
   </div>
 
   <h1>[Day 02] 옥내소화전 배관·감압장치 및 방수압·방수량 실무</h1>
+
+  <!-- 3D 인터랙티브 암기카드 -->
+  <div class="flashcard-section no-print">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <div>
+            <span class="card-tag card-tag-front">Day 02 핵심 암기카드 (앞면)</span>
+            <div class="card-q">Q. 옥내소화전 방수압력/방수량 기준과 배관 구경·감압장치 설치 기준은?</div>
+          </div>
+          <div class="card-hint">💡 <strong>암기 공식:</strong> "수오-가사-주오사" / "영칠 초과 시 오·밸 감압"</div>
+          <div class="card-guide">👆 카드를 터치하면 뒷면 정답이 나타납니다.</div>
+        </div>
+        <div class="flip-card-back">
+          <div>
+            <span class="card-tag card-tag-back">정답 및 인출 확인 (뒷면)</span>
+            <div class="card-ans">
+              • <strong>방수성능:</strong> 압력 <strong>0.17 ~ 0.7 MPa</strong> / 방수량 <strong>130 L/min 이상</strong><br>
+              • <strong>배관구경:</strong> 수직 <strong>50㎜ 이상</strong>, 가지 <strong>40㎜ 이상</strong>, 주배관 유속 <strong>4m/s 이하</strong><br>
+              • <strong>감압기준:</strong> 노즐선단 <strong>0.7 MPa 초과 시</strong> 감압장치(오리피스·밸브) 설치
+            </div>
+          </div>
+          <div class="card-guide" style="color:#0b7285;">다시 터치하면 앞면으로 돌아갑니다 ↺</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <h2>1. 머릿속 인출 마인드맵 (배관 및 방수계통)</h2>
   <pre>
@@ -88,12 +139,13 @@
     </table>
   </div>
 
-  <h2>5. 실전 방수량 계산형 기출</h2>
+  <h2>5. 실전 방수량 계산형 기출 (매뉴얼 연계)</h2>
   <div class="manual-box">
     <strong>[문제]</strong> 옥내소화전(노즐 13㎜) 선단에서 피토게이지로 측정한 방수압력이 <strong>0.25 MPa</strong>이었다. 분당 방수량을 계산하시오.<br><br>
-    <strong>[산출식]</strong> $Q = 2.086 \times D^2 \times \sqrt{P}$<br>
-    • $Q = 2.086 \times 13^2 \times \sqrt{0.25} = 2.086 \times 169 \times 0.5 \approx$ <strong><span class="mask">176.27 L/min</span></strong>
-  </div>  <script>
+    <strong>[산출식]</strong>  = 2.086 \times D^2 \times \sqrt{P}$<br>
+    •  = 2.086 \times 13^2 \times \sqrt{0.25} = 2.086 \times 169 \times 0.5 \approx$ <strong><span class="mask">176.27 L/min</span></strong>
+  </div>
+  <script>
     document.querySelectorAll('.mask').forEach(el => {
       el.addEventListener('click', () => el.classList.toggle('revealed'));
     });

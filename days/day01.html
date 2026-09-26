@@ -1,9 +1,72 @@
-﻿  <style>
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>소방시설관리사 2차 점검실무 - Day 01 가압송수장치 펌프 성능시험</title>
+  <style>
     @page { size: A4 portrait; margin: 14mm; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; line-height: 1.45; color: #111; font-size: 10.2pt; margin: 0; padding: 12px; background: #fff; }
     .header-box { border: 1.5pt solid #222; padding: 6px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; font-size: 8.8pt; background-color: #f8f9fa; font-weight: bold; flex-wrap: wrap; gap: 4px; }
     h1 { font-size: 14pt; border-bottom: 2pt solid #003366; padding-bottom: 4px; margin: 4px 0 10px 0; color: #003366; }
     h2 { font-size: 11pt; background-color: #e9ecef; padding: 4px 8px; margin: 12px 0 6px 0; border-left: 4pt solid #003366; }
+
+    /* 3D 플립 암기카드 컨테이너 */
+    .flashcard-section { margin: 12px 0 18px 0; }
+    .flip-card {
+      background-color: transparent;
+      width: 100%;
+      height: 220px;
+      perspective: 1000px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: left;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 10px;
+      padding: 16px 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .flip-card-front {
+      background: linear-gradient(135deg, #003366 0%, #0b7285 100%);
+      color: #ffffff;
+      border: 1px solid #002244;
+    }
+    .flip-card-back {
+      background: #ffffff;
+      color: #212529;
+      transform: rotateY(180deg);
+      border: 2px solid #0b7285;
+    }
+    .card-tag { font-size: 8pt; font-weight: bold; padding: 3px 8px; border-radius: 4px; display: inline-block; width: fit-content; }
+    .card-tag-front { background: rgba(255,255,255,0.2); color: #fff; }
+    .card-tag-back { background: #e6fcf5; color: #0ca678; }
+    .card-q { font-size: 11pt; font-weight: bold; line-height: 1.4; margin-top: 6px; }
+    .card-hint { font-size: 8.8pt; color: #ffec99; }
+    .card-ans { font-size: 9.8pt; line-height: 1.5; color: #111; margin-top: 4px; }
+    .card-ans strong { color: #d9480f; }
+    .card-guide { font-size: 8pt; text-align: right; color: #868e96; }
+
     .table-wrapper { width: 100%; overflow-x: auto; margin: 6px 0 10px 0; -webkit-overflow-scrolling: touch; }
     table { width: 100%; min-width: 580px; border-collapse: collapse; font-size: 9pt; }
     th, td { border: 1pt solid #444; padding: 6px 8px; vertical-align: middle; }
@@ -19,13 +82,13 @@
     .toggle-btn-sub { background: #fff; color: #003366; }
     .answer-block { border: 1.5pt solid #0b7285; background-color: #f1fcfc; padding: 8px 12px; margin: 8px 0; font-size: 9.3pt; border-radius: 4px; }
     .answer-block strong { color: #0b7285; }
-    .reason-box { border: 1pt solid #ffa8a8; background: #fff5f5; padding: 8px 10px; font-size: 8.8pt; margin: 6px 0; border-radius: 4px; }
-    .manual-box { border: 1pt solid #ced4da; background-color: #f8f9fa; padding: 8px 12px; margin: 6px 0; font-size: 9pt; border-radius: 4px; }
     @media (max-width: 640px) { body { padding: 8px; } .toggle-bar { flex-direction: column; } .toggle-btn { width: 100%; min-height: 44px; } }
-    @media print { .toggle-bar, .no-print { display: none !important; } .mask { background-color: transparent !important; color: #111 !important; } pre { white-space: pre-wrap; font-size: 8pt; } body { padding: 0; } }
+    @media print { .toggle-bar, .no-print, .flashcard-section { display: none !important; } .mask { background-color: transparent !important; color: #111 !important; } pre { white-space: pre-wrap; font-size: 8pt; } body { padding: 0; } }
   </style>
 </head>
-<body>  <div class="header-box">
+<body>
+
+  <div class="header-box">
     <span>[2027 소방시설관리사 2차] 점검실무행정 (소방청 매뉴얼 1권 85~87p / 점검표 2-C-004)</span>
     <span>기준확인일: 2026.07.01 개정 반영 (검증: 2026-09-26)</span>
   </div>
@@ -36,6 +99,35 @@
   </div>
 
   <h1>[Day 01] 가압송수장치 펌프 성능시험 및 릴리프밸브 점검</h1>
+
+  <!-- 3D 인터랙티브 암기카드 (터치 시 회전) -->
+  <div class="flashcard-section no-print">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <!-- 앞면 (질문/두문자 힌트) -->
+        <div class="flip-card-front">
+          <div>
+            <span class="card-tag card-tag-front">Day 01 핵심 암기카드 (앞면)</span>
+            <div class="card-q">Q1. 펌프 3대 운전점 판정 기준과 순환배관 3대 기준은?</div>
+          </div>
+          <div class="card-hint">💡 <strong>암기 공식:</strong> "체-140, 백-백, 백오-육오" / "체·펌 분기, 이십 미리, 체절 미만"</div>
+          <div class="card-guide">👆 카드를 터치(클릭)하면 뒷면 정답이 나타납니다.</div>
+        </div>
+        <!-- 뒷면 (정답/판정요약) -->
+        <div class="flip-card-back">
+          <div>
+            <span class="card-tag card-tag-back">정답 및 인출 확인 (뒷면)</span>
+            <div class="card-ans">
+              • <strong>성능판정:</strong> 체절 ≤ <strong>140%</strong>, 정격(100%Q) ≥ <strong>100%</strong>, 최대(150%Q) ≥ <strong>65%</strong><br>
+              • <strong>순환배관:</strong> 체크밸브와 펌프 사이 분기, 구경 <strong>20㎜ 이상</strong><br>
+              • <strong>릴리프밸브:</strong> 체절압력 <strong>미만</strong>에서 개방 (수온상승 방지)
+            </div>
+          </div>
+          <div class="card-guide" style="color:#0b7285;">다시 터치하면 앞면으로 돌아갑니다 ↺</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <h2>1. 머릿속 인출 마인드맵 (성능시험 계통)</h2>
   <pre>
@@ -90,9 +182,11 @@
 
   <h2>5. 시험지에 그대로 쓸 모범 서술형 답안 블록</h2>
   <div class="answer-block">
-    <strong>[모범 답안 1: 순환배관 설치기준 (NFTC 102 2.2.1)]</strong><br>
+    <strong>[모범 답안: 순환배관 설치기준 (NFTC 102 2.2.1)]</strong><br>
     가압송수장치의 수온상승을 방지하기 위하여 <span class="mask">체크밸브와 펌프 사이</span>에서 분기한 <span class="mask">구경 20㎜ 이상</span>의 배관에, 체절운전 시 수온의 상승을 방지하기 위하여 <span class="mask">체절압력 미만</span>에서 개방되는 릴리프밸브를 설치하여야 한다.
-  </div>  <script>
+  </div>
+
+  <script>
     document.querySelectorAll('.mask').forEach(el => {
       el.addEventListener('click', () => el.classList.toggle('revealed'));
     });
