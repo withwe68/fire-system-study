@@ -1,10 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>소방시설관리사 2차 점검실무 - Day 04 기동용수압개폐장치 압력 세팅 및 충압펌프 실무</title>
-  <style>
+﻿  <style>
     @page { size: A4 portrait; margin: 14mm; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; line-height: 1.45; color: #111; font-size: 10.2pt; margin: 0; padding: 12px; background: #fff; }
     .header-box { border: 1.5pt solid #222; padding: 6px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; font-size: 8.8pt; background-color: #f8f9fa; font-weight: bold; flex-wrap: wrap; gap: 4px; }
@@ -14,29 +8,11 @@
     table { width: 100%; min-width: 580px; border-collapse: collapse; font-size: 9pt; }
     th, td { border: 1pt solid #444; padding: 6px 8px; vertical-align: middle; }
     th { background-color: #f1f3f5; text-align: center; font-weight: 600; }
-    pre {
-      background-color: #f8f9fa;
-      border: 1pt solid #ccc;
-      padding: 8px;
-      font-family: "D2Coding", "Consolas", monospace;
-      font-size: 8.4pt;
-      line-height: 1.35;
-      margin: 4px 0 8px 0;
-      white-space: pre;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    .mask {
-      background-color: #212529;
-      color: #212529;
-      border-radius: 4px;
-      padding: 2px 6px;
-      margin: 1px 2px;
-      display: inline-block;
-      cursor: pointer;
-      user-select: none;
-      min-height: 22px;
-    }
+    pre { background-color: #f8f9fa; border: 1pt solid #ccc; padding: 8px; font-family: "D2Coding", "Consolas", monospace; font-size: 8.4pt; line-height: 1.35; margin: 4px 0 8px 0; white-space: pre; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .img-box { border: 1pt solid #ced4da; background-color: #f8f9fa; padding: 10px; border-radius: 6px; margin: 8px 0; text-align: center; }
+    .img-box img { max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .img-caption { font-size: 8.5pt; color: #495057; margin-top: 6px; }
+    .mask { background-color: #212529; color: #212529; border-radius: 4px; padding: 2px 6px; margin: 1px 2px; display: inline-block; cursor: pointer; user-select: none; min-height: 22px; }
     .mask.revealed { background-color: #fff3bf; color: #d9480f; font-weight: bold; border: 1px solid #ffd43b; }
     .toggle-bar { margin-bottom: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
     .toggle-btn { min-height: 42px; padding: 6px 14px; font-size: 8.8pt; font-weight: bold; border: 1px solid #003366; background: #003366; color: #fff; border-radius: 6px; cursor: pointer; }
@@ -49,10 +25,8 @@
     @media print { .toggle-bar, .no-print { display: none !important; } .mask { background-color: transparent !important; color: #111 !important; } pre { white-space: pre-wrap; font-size: 8pt; } body { padding: 0; } }
   </style>
 </head>
-<body>
-
-  <div class="header-box">
-    <span>[2027 소방시설관리사 2차] 점검실무행정 (소방청 매뉴얼 1권 56~57p, 88p / 해설서 공통 가압송수장치)</span>
+<body>  <div class="header-box">
+    <span>[2027 소방시설관리사 2차] 점검실무행정 (소방청 매뉴얼 1권 88p / 점검표 2-C-007)</span>
     <span>기준확인일: 2026.07.01 개정 반영 (검증: 2026-09-26)</span>
   </div>
 
@@ -61,18 +35,26 @@
     <button class="toggle-btn toggle-btn-sub" onclick="window.print()">🖨️ A4 출력 / PDF 저장</button>
   </div>
 
-  <h1>[Day 04] 기동용수압개폐장치 압력 세팅 및 충압펌프 점검 실무</h1>
+  <h1>[Day 04] 기동용수압개폐장치 압력 세팅 및 충압펌프 실무</h1>
 
   <h2>1. 머릿속 인출 마인드맵 (압력 계통 구조화)</h2>
   <pre>
 [기동용수압개폐장치 압력 세팅]
   ├── 1. 압력스위치 눈금 ── [Range = <span class="mask">정지압력(정지점)</span> / Diff = <span class="mask">정지점 - 기동점(차압)</span>]
-  ├── 2. 주펌프 세팅 ──── [기동점: <span class="mask">자연낙차압 + 0.2 MPa</span> / 정지점: <span class="mask">자동정지 금지(체절압력 이상)</span>]
+  ├── 2. 주펌프 세팅 ──── [기동점: <span class="mask">자연낙차압 + 0.2 MPa</span> / 정지점: <span class="mask">자동정지 금지(체절 이상)</span>]
   ├── 3. 충압펌프 세팅 ── [정지점: <span class="mask">주펌프 정격압력 수준</span> / 기동점: <span class="mask">주펌프 기동점 + 0.05 MPa</span>]
-  └── 4. 충압펌프 사양 ── [토출량: <span class="mask">60 L/min 이하</span> (과대 선정 방지) / 토출압력: <span class="mask">자연압 + 0.2 MPa 이상</span>]
+  └── 4. 충압펌프 사양 ── [토출량: <span class="mask">60 L/min 이하</span> / 토출압력: <span class="mask">자연압 + 0.2 MPa 이상</span>]
   </pre>
 
-  <h2>2. 압력스위치 Range / Diff 세팅 원리 개념도</h2>
+  <h2>2. 핵심 두문자 암기 공식</h2>
+  <pre>
+• 펌프 압력 세팅 공식: <strong>"주기-자이, 충기-주오, 주정-수동"</strong>
+  (주펌프 기동점 = <span class="mask">자연압 + 0.2 MPa</span>, 충압 기동점 = <span class="mask">주펌프 기동 + 0.05 MPa</span>, 주펌프 정지 = <span class="mask">자동정지 불가(수동)</span>)
+• 충압펌프 선정 기준: <strong>"육공 이하, 자이 이상"</strong>
+  (토출량은 <span class="mask">60 L/min 이하</span>로 과대선정 방지, 토출압력은 <span class="mask">자연압 + 0.2 MPa 이상</span>)
+  </pre>
+
+  <h2>3. 압력스위치 Range / Diff 세팅 원리 개념도</h2>
   <pre>
        압력 (MPa)
          ▲
@@ -93,12 +75,7 @@
          └─┴─────────────────────────┴────────► 시간 (t)
   </pre>
 
-  <div class="reason-box">
-    💡 <strong>해설서 핵심 기술 배경 (주펌프 자동정지 금지 이유):</strong><br>
-    2006.12.30 이후 건축허가 대상부터 주펌프는 자동정지가 금지되었습니다. 소화전 1개만 개방되는 화재 초기에는 펌프 토출량이 설비 요구량보다 커서 압력이 급상승하므로, 자동정지가 허용되면 <strong>기동과 정지를 반복하는 '단속운전(Chattering)'</strong>이 발생하여 전압 플리커 및 모터 소손, 소화용수 공급 중단 위험이 발생하기 때문입니다.
-  </div>
-
-  <h2>3. 소방시설 자체점검표(2-C-007, 2-C-011) 점검 기준</h2>
+  <h2>4. 소방시설 자체점검표(2-C-007, 2-C-011) 점검 기준</h2>
   <div class="table-wrapper">
     <table>
       <thead>
@@ -112,29 +89,23 @@
       <tbody>
         <tr>
           <td style="text-align: center;"><strong>기동장치 압력설정<br>(2-C-007)</strong></td>
-          <td>배수밸브 개방 감압 시 충압펌프 $\rightarrow$ 주펌프 순차 기동 및 설정치 확인</td>
-          <td>• 주펌프: <br><strong><span class="mask">자연압 + 0.2 MPa</span></strong><br>• 충압펌프: <br><strong><span class="mask">주펌프 + 0.05 MPa</span></strong></td>
-          <td>주펌프 기동점이 자연낙차압보다 낮아 감압에도 기동 불능 (물기둥효과 미고려)</td>
-        </tr>
-        <tr>
-          <td style="text-align: center;"><strong>주펌프 정지 방식<br>(2-C-007)</strong></td>
-          <td>압력챔버 배수밸브를 닫아 배관 가압 후 주펌프 자동정지 여부 확인</td>
-          <td>2006.12.30 이후 대상:<br><strong><span class="mask">자동정지 금지</span></strong><br>(수동정지만 가능)</td>
-          <td>화재 진압 중 주펌프가 자동으로 정지되어 소화 실패 유발</td>
+          <td>배수밸브 감압 시 충압 $\rightarrow$ 주펌프 순차 기동 및 설정치 확인</td>
+          <td>• 주펌프: <strong><span class="mask">자연압+0.2 MPa</span></strong><br>• 충압펌프: <strong><span class="mask">주펌프+0.05 MPa</span></strong></td>
+          <td>주펌프 기동점이 자연낙차압보다 낮아 감압에도 기동 불능</td>
         </tr>
         <tr>
           <td style="text-align: center;"><strong>충압펌프 성능<br>(2-C-011)</strong></td>
-          <td>명판 사양 확인 및 토출압력, 정격토출량 적정성 점검</td>
-          <td>• 토출압력: <strong><span class="mask">자연압 + 0.2 MPa</span></strong><br>• 토출량: <strong><span class="mask">60 L/min 이하</span></strong></td>
-          <td>충압펌프 토출량이 너무 커서 주펌프를 대신하여 주펌프 미기동</td>
+          <td>명판 사양 및 토출압력, 정격토출량 점검</td>
+          <td>• 토출압력: <strong><span class="mask">자연압+0.2 MPa</span></strong><br>• 토출량: <strong><span class="mask">60 L/min 이하</span></strong></td>
+          <td>충압 토출량이 너무 커서 주펌프를 대신하여 주펌프 미기동</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <h2>4. 시험지에 그대로 쓸 모범 서술형 답안 블록</h2>
+  <h2>5. 시험지에 그대로 쓸 모범 서술형 답안 블록</h2>
   <div class="answer-block">
-    <strong>[모범 답안 1: 기동용수압개폐장치 압력스위치 세팅 공식 및 절차]</strong><br>
+    <strong>[모범 답안 1: 기동용수압개폐장치 압력스위치 세팅 절차]</strong><br>
     1. <strong>충압펌프 정지점(Range):</strong> 주펌프의 정격토출압력과 같거나 <span class="mask">0.05 ~ 0.1 MPa 낮게</span> 설정한다.<br>
     2. <strong>주펌프 기동점:</strong> 건물 최고위 방수구의 <span class="mask">자연낙차압 + 0.2 MPa</span>(스프링클러는 0.15 MPa)로 설정한다.<br>
     3. <strong>충압펌프 기동점:</strong> 주펌프 기동점보다 <span class="mask">최소 0.05 MPa 높게</span> 설정하여 충압펌프가 먼저 작동하도록 한다.<br>
@@ -142,25 +113,9 @@
   </div>
 
   <div class="answer-block">
-    <strong>[모범 답안 2: 충압펌프 토출량 선정 기준 및 제한 이유 (해설서 공통 가압송수장치)]</strong><br>
-    충압펌프의 토출량은 정상적인 배관 누설량을 보충하기 위해 <span class="mask">60 L/min 이하</span>로 선정한다. 충압펌프의 토출량을 지나치게 크게 선정할 경우 화재 발생으로 노즐이 개방되어도 충압펌프만으로 수량이 공급되어 <span class="mask">주펌프가 기동되지 않는 소화 실패 현상</span>이 발생할 수 있기 때문이다.
-  </div>
-
-  <h2>5. 실전 압력스위치 세팅 계산형 기출 (매뉴얼 88p 연계)</h2>
-  <div class="manual-box">
-    <strong>[문제]</strong> 지하 1층 기계실에 소화펌프가 있고, 펌프 중심축으로부터 가장 높은 옥내소화전 방수구까지의 높이가 <strong>30m</strong>이다. 주펌프의 정격양정이 <strong>70m(0.7 MPa)</strong>일 때, 압력스위치의 세팅값(주펌프 및 충압펌프의 Range, Diff)을 계산하시오.<br><br>
-    <strong>[풀이 및 산출]</strong><br>
-    1. 자연낙차압: $30\,\text{m} =$ <strong>0.3 MPa</strong><br>
-    2. 주펌프 세팅:<br>
-       • 기동점: 자연낙차압(0.3) + 0.2 = <strong><span class="mask">0.5 MPa</span></strong><br>
-       • 정지점(Range): 2006.12.30 이후 건축허가 대상이므로 체절압력 이상(자동정지 금지)<br>
-    3. 충압펌프 세팅:<br>
-       • 정지점(Range): 주펌프 정격압력 = <strong><span class="mask">0.7 MPa</span></strong><br>
-       • 기동점: 주펌프 기동점(0.5) + 0.05 = <strong><span class="mask">0.55 MPa</span></strong><br>
-       • Diff: 정지점(0.7) - 기동점(0.55) = <strong><span class="mask">0.15 MPa</span></strong>
-  </div>
-
-  <script>
+    <strong>[모범 답안 2: 충압펌프 토출량 선정 기준 및 제한 이유]</strong><br>
+    충압펌프의 토출량은 정상적인 배관 누설량을 보충하기 위해 <span class="mask">60 L/min 이하</span>로 선정한다. 충압펌프의 토출량을 지나치게 크게 선정할 경우 화재 발생으로 노즐이 개방되어도 충압펌프만으로 수량이 공급되어 <span class="mask">주펌프가 기동되지 않는 소화 실패 현상(단속운전)</span>이 발생할 수 있기 때문이다.
+  </div>  <script>
     document.querySelectorAll('.mask').forEach(el => {
       el.addEventListener('click', () => el.classList.toggle('revealed'));
     });

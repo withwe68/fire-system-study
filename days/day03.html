@@ -1,10 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>소방시설관리사 2차 점검실무 - Day 03 옥내소화전 수원량 산정 및 옥상수조 실무</title>
-  <style>
+﻿  <style>
     @page { size: A4 portrait; margin: 14mm; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; line-height: 1.45; color: #111; font-size: 10.2pt; margin: 0; padding: 12px; background: #fff; }
     .header-box { border: 1.5pt solid #222; padding: 6px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; font-size: 8.8pt; background-color: #f8f9fa; font-weight: bold; flex-wrap: wrap; gap: 4px; }
@@ -14,29 +8,11 @@
     table { width: 100%; min-width: 580px; border-collapse: collapse; font-size: 9pt; }
     th, td { border: 1pt solid #444; padding: 6px 8px; vertical-align: middle; }
     th { background-color: #f1f3f5; text-align: center; font-weight: 600; }
-    pre {
-      background-color: #f8f9fa;
-      border: 1pt solid #ccc;
-      padding: 8px;
-      font-family: "D2Coding", "Consolas", monospace;
-      font-size: 8.4pt;
-      line-height: 1.35;
-      margin: 4px 0 8px 0;
-      white-space: pre;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    .mask {
-      background-color: #212529;
-      color: #212529;
-      border-radius: 4px;
-      padding: 2px 6px;
-      margin: 1px 2px;
-      display: inline-block;
-      cursor: pointer;
-      user-select: none;
-      min-height: 22px;
-    }
+    pre { background-color: #f8f9fa; border: 1pt solid #ccc; padding: 8px; font-family: "D2Coding", "Consolas", monospace; font-size: 8.4pt; line-height: 1.35; margin: 4px 0 8px 0; white-space: pre; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .img-box { border: 1pt solid #ced4da; background-color: #f8f9fa; padding: 10px; border-radius: 6px; margin: 8px 0; text-align: center; }
+    .img-box img { max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .img-caption { font-size: 8.5pt; color: #495057; margin-top: 6px; }
+    .mask { background-color: #212529; color: #212529; border-radius: 4px; padding: 2px 6px; margin: 1px 2px; display: inline-block; cursor: pointer; user-select: none; min-height: 22px; }
     .mask.revealed { background-color: #fff3bf; color: #d9480f; font-weight: bold; border: 1px solid #ffd43b; }
     .toggle-bar { margin-bottom: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
     .toggle-btn { min-height: 42px; padding: 6px 14px; font-size: 8.8pt; font-weight: bold; border: 1px solid #003366; background: #003366; color: #fff; border-radius: 6px; cursor: pointer; }
@@ -44,23 +20,13 @@
     .answer-block { border: 1.5pt solid #0b7285; background-color: #f1fcfc; padding: 8px 12px; margin: 8px 0; font-size: 9.3pt; border-radius: 4px; }
     .answer-block strong { color: #0b7285; }
     .reason-box { border: 1pt solid #ffa8a8; background: #fff5f5; padding: 8px 10px; font-size: 8.8pt; margin: 6px 0; border-radius: 4px; }
-    @media (max-width: 640px) {
-      body { padding: 8px; }
-      .toggle-bar { flex-direction: column; }
-      .toggle-btn { width: 100%; min-height: 44px; }
-    }
-    @media print {
-      .toggle-bar, .no-print { display: none !important; }
-      .mask { background-color: transparent !important; color: #111 !important; }
-      pre { white-space: pre-wrap; font-size: 8pt; }
-      body { padding: 0; }
-    }
+    .manual-box { border: 1pt solid #ced4da; background-color: #f8f9fa; padding: 8px 12px; margin: 6px 0; font-size: 9pt; border-radius: 4px; }
+    @media (max-width: 640px) { body { padding: 8px; } .toggle-bar { flex-direction: column; } .toggle-btn { width: 100%; min-height: 44px; } }
+    @media print { .toggle-bar, .no-print { display: none !important; } .mask { background-color: transparent !important; color: #111 !important; } pre { white-space: pre-wrap; font-size: 8pt; } body { padding: 0; } }
   </style>
 </head>
-<body>
-
-  <div class="header-box">
-    <span>[2027 소방시설관리사 2차] 점검실무행정 (소방청 매뉴얼 1권 51~53p / 해설서 1권 수원)</span>
+<body>  <div class="header-box">
+    <span>[2027 소방시설관리사 2차] 점검실무행정 (소방청 매뉴얼 1권 77p / 점검표 2-A)</span>
     <span>기준확인일: 2026.07.01 개정 반영 (검증: 2026-09-26)</span>
   </div>
 
@@ -76,78 +42,60 @@
 [옥내소화전설비 수원 및 수조]
   ├── 1. 주된 수원량 ─── [N(최대 2개) × <span class="mask">2.6㎥</span>] (30~49층: <span class="mask">5.2㎥</span>, 50층 이상: <span class="mask">7.8㎥</span>)
   ├── 2. 옥상수조(2차) ── [유효수량의 <span class="mask">3분의 1 이상</span> 옥상 설치] ◄── [설치제외: 지·고·최·십·예·수·가]
-  ├── 3. 겸용수조 유효수량 [<span class="mask">타 배관 흡수구 하단</span> ~ <span class="mask">소화배관 흡수구 상단</span> 사이 수량]
+  ├── 3. 겸용수조 유효량 ─ [<span class="mask">타 배관 흡수구 하단</span> ~ <span class="mask">소화배관 흡수구 상단</span> 사이 수량]
   └── 4. 수조 부대설비 ── [수위계 / 고정사다리 / 조명 / 배수관 / 표지(수조·배관) / 자동급수]
   </pre>
 
-  <h2>2. 겸용수조 유효수량 판정 단면도</h2>
+  <h2>2. 핵심 두문자 암기 공식</h2>
   <pre>
-       ┌──────────────────────────────────────────────┐
-       │ [수조 최고수위 (Overflow 라인)]               │
-       │ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  │ ◄── [일반용수 펌프 흡수구 하단]
-       │ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ │
-       │ ░░░░░░░░░░  [ 소화설비 전용 유효수량 ]  ░░░░░░░░ │ ──► 일반용수 흡수 불가 구간
-       │ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ │
-       │ ──────────────────────────────────────────── │ ◄── [소화용수 펌프 풋밸브/흡수구 상단]
-       │  (사수량 Dead Water: 바닥~흡수구 상단 구간)   │ ──► 유효수량 산정 제외!
-       └──────────────────────────────────────────────┘
+• 옥상수조 제외 대상: <strong>"지·고·최·십·예·수·가"</strong>
+  (<span class="mask">지하층</span>, <span class="mask">고가수조</span>, <span class="mask">최상층방수구 위</span>, <span class="mask">10m이하</span>, <span class="mask">예비펌프</span>, <span class="mask">수동기동</span>, <span class="mask">가압수조</span>)
+• 수조 부대설비: <strong>"수·사·조·배·표"</strong>
+  (<span class="mask">수위계</span>, 고정<span class="mask">사다리</span>, <span class="mask">조명설비</span>, 청소용 <span class="mask">배수관</span>, <span class="mask">표지</span>)
   </pre>
 
-  <div class="reason-box">
-    💡 <strong>해설서 기술적 배경 (공학 원리):</strong><br>
-    유효수량을 "소화배관 흡수구 상단"까지만 인정하는 이유는 수위가 흡수구 상단보다 낮아지면 수면에 소용돌이(와류, Vortex)가 형성되어 배관 내부로 공기가 빨려 들어가는 <strong>에어바운딩 및 펌프 캐비테이션(공동현상)</strong>이 발생하여 송수가 중단되기 때문입니다.
+  <h2>3. 소방청 매뉴얼 옥상수조 및 겸용수조 판정 단면도</h2>
+  <div class="img-box">
+    <img src="../images/day03_rooftop.png" alt="옥상수조 개념도">
+  </div>
+  <div class="img-box">
+    <img src="../images/day03_water.png" alt="겸용수조 유효수량 판정">
+    <div class="img-caption">▲ 일반설비 겸용 시 소화수조의 유효수량 산정 기준 (매뉴얼 77p)</div>
   </div>
 
-  <h2>3. 자체점검표(2-A, 2-B) 점검 기준</h2>
+  <h2>4. 소방시설 자체점검표(2-A, 2-B) 점검 기준</h2>
   <div class="table-wrapper">
     <table>
       <thead>
         <tr>
           <th style="width: 20%;">점검표 항목</th>
           <th style="width: 32%;">소방청 매뉴얼 점검 요령</th>
-          <th style="width: 24%;">양호 기준 (NFTC 102)</th>
+          <th style="width: 24%;">양호 기준 (NFTC)</th>
           <th style="width: 24%;">주요 불량 판정 사례</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td style="text-align: center;"><strong>주된 수원의<br>유효수량 (2-A-001)</strong></td>
-          <td>최대 층 소화전 개수 확인 및 수조 내부 일반·소화배관 레벨 실측</td>
-          <td>$N \times$ <strong><span class="mask">2.6㎥ 이상</span></strong><br>(타배관하단~소화배관상단)</td>
-          <td>• 유효수량 법정 기준 미달<br>• 일반배관이 바닥까지 내려가 겸용 침범</td>
+          <td>수조 내부 일반·소화배관 레벨 실측</td>
+          <td>$N \times$ <strong><span class="mask">2.6㎥ 이상</span></strong></td>
+          <td>일반배관이 바닥까지 내려가 소화수역 침범</td>
         </tr>
         <tr>
           <td style="text-align: center;"><strong>보조수원(옥상)<br>확보 여부 (2-A-002)</strong></td>
-          <td>주된 옥상에 보조수조 설치 여부 및 법정 제외 대상 해당 여부 확인</td>
-          <td>주된 수원 유효수량의<br><strong><span class="mask">3분의 1 이상</span></strong> 확보</td>
+          <td>주된 옥상에 보조수조 설치 및 제외대상 확인</td>
+          <td>주된 수원의<br><strong><span class="mask">3분의 1 이상</span></strong> 확보</td>
           <td>제외 대상이 아님에도 옥상수조 미설치</td>
-        </tr>
-        <tr>
-          <td style="text-align: center;"><strong>수조 부대설비<br>(2-B-001~007)</strong></td>
-          <td>수위계 지침 정상 여부, 고정사다리(상단>바닥), 조명설비, 배수밸브 점검</td>
-          <td>외측 수위계·고정사다리·<br>배수밸브·표지 설치 완비</td>
-          <td>수위계 파손으로 수위 미확인, 배수밸브 미설치</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <h2>4. 시험지에 그대로 쓸 모범 서술형 답안 블록</h2>
+  <h2>5. 시험지에 그대로 쓸 모범 서술형 답안 블록</h2>
   <div class="answer-block">
-    <strong>[모범 답안 1: 옥상수조(보조수원) 설치 제외 기준 (NFTC 102 2.1)]</strong><br>
-    1. <span class="mask">지하층만 있는 건축물</span><br>
-    2. <span class="mask">고가수조를 가압송수장치로 설치한 경우</span><br>
-    3. <span class="mask">수원이 건축물의 최상층에 설치된 방수구보다 높은 위치에 설치된 경우</span><br>
-    4. <span class="mask">건축물의 높이가 지표면으로부터 10m 이하인 경우</span><br>
-    5. <span class="mask">주펌프와 동등 이상의 성능이 있는 별도의 펌프로서 내연기관의 기동과 연동하여 작동되거나 비상전원을 연결하여 설치한 경우</span>
-  </div>
-
-  <div class="answer-block">
-    <strong>[모범 답안 2: 다른 설비와 겸용하는 수조의 유효수량 산정 기준 (해설서 공통수원)]</strong><br>
-    소화설비용 수조를 일반 급수설비 등 다른 설비와 겸용하여 설치하는 경우, 유효수량은 <span class="mask">다른 설비의 풋밸브·흡수구의 하단</span>과 <span class="mask">소화설비용 풋밸브·흡수구의 상단</span> 사이의 수량으로 산정한다.
-  </div>
-
-  <script>
+    <strong>[모범 답안: 다른 설비와 겸용하는 수조의 유효수량 산정 기준]</strong><br>
+    소화설비용 수조를 일반 급수설비 등 다른 설비와 겸용하여 설치하는 경우, 유효수량은 <span class="mask">다른 설비의 풋밸브·흡수구의 하단</span>과 <span class="mask">소화설비용 풋밸브·흡수구의 상단</span> 사이의 수량으로 산정한다. 이는 수위 저하 시 발생하는 소용돌이(Vortex)로 인한 공기 흡입(에어바운딩)을 방지하기 위함이다.
+  </div>  <script>
     document.querySelectorAll('.mask').forEach(el => {
       el.addEventListener('click', () => el.classList.toggle('revealed'));
     });
