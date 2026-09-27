@@ -3,205 +3,301 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>소방시설관리사 2차 점검실무 - 일일 인출 대시보드</title>
+  <title>소방시설관리사 2차 점검실무 35일 챌린지</title>
   <style>
     :root {
       --primary: #003366;
+      --primary-light: #e8f0fe;
+      --secondary: #0b7285;
+      --secondary-light: #e6fcf5;
       --accent: #d9480f;
       --bg: #f8f9fa;
       --card-bg: #ffffff;
       --text: #212529;
-      --border: #ced4da;
+      --text-muted: #6c757d;
+      --border: #dee2e6;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      padding: 12px;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .container { max-width: 960px; margin: 0 auto; }
-    header {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-    }
-    h1 { color: var(--primary); font-size: 1.35rem; margin-bottom: 4px; }
-    .meta-desc { font-size: 0.82rem; color: #6c757d; }
-    .filter-bar {
-      position: sticky;
-      top: 10px;
-      z-index: 100;
-      margin-bottom: 14px;
-    }
-    input[type="text"] {
-      width: 100%;
-      height: 46px;
-      padding: 10px 14px;
-      border: 1.5pt solid var(--primary);
-      border-radius: 8px;
-      font-size: 0.95rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-      background: #fff;
-    }
-    .grid { display: grid; gap: 14px; }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-    }
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .badges { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
-    .badge {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 4px 7px;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-    }
-    .badge-day { background: #e7f5ff; color: #1971c2; }
-    .badge-exam { background: #fff3bf; color: #d9480f; }
-    .badge-chk { background: #e6fcf5; color: #0ca678; }
-    .v-date { font-size: 0.78rem; color: #868e96; margin-left: auto; }
-    .card-title {
-      font-size: 1.15rem;
-      color: #111;
-      text-decoration: none;
-      font-weight: 700;
-      line-height: 1.4;
-    }
-    .nftc-ref { font-size: 0.82rem; color: #495057; }
-    .tags { display: flex; flex-wrap: wrap; gap: 5px; }
-    .tag {
-      background: #f1f3f5;
-      font-size: 0.75rem;
-      padding: 3px 6px;
-      border-radius: 3px;
-      color: #495057;
-    }
-    .btn-group { display: flex; gap: 8px; margin-top: 4px; }
-    .btn {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 44px;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      text-decoration: none;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .btn-primary { background: var(--primary); color: #fff; flex: 2; border: none; }
-    .btn-outline { border: 1px solid var(--border); color: #495057; background: #fff; flex: 1; }
-    .error-msg {
-      background: #ffe3e3;
-      border: 1px solid #ffa8a8;
-      padding: 12px;
-      border-radius: 6px;
-      color: #c92a2a;
-      font-size: 0.9rem;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.5; font-size: 14px; padding-bottom: 50px; }
 
-    /* 모바일 반응형 브레이크포인트 */
-    @media (max-width: 640px) {
-      body { padding: 8px; }
-      h1 { font-size: 1.25rem; }
-      .btn-group { flex-direction: column; }
-      .btn { width: 100%; min-height: 46px; }
-    }
+    header { background-color: var(--primary); color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; }
+    .header-title { font-size: 15px; font-weight: bold; }
+    .header-stats { font-size: 12px; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 12px; }
+
+    .dashboard-bar { background: #fff; border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+    .streak-badge { font-weight: bold; color: var(--accent); }
+    .mode-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--secondary); font-weight: bold; }
+
+    .day-nav { display: flex; overflow-x: auto; padding: 10px 14px; gap: 8px; background: #fff; border-bottom: 1px solid var(--border); -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .day-nav::-webkit-scrollbar { display: none; }
+    .nav-pill { flex: 0 0 auto; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid var(--border); background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
+    .nav-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .nav-pill.today { border: 2px solid var(--accent); color: var(--accent); background: #fff; }
+    .nav-pill.active.today { background: var(--accent); color: #fff; }
+    .nav-pill.completed::after { content: " ✓"; color: #20c997; font-weight: bold; }
+    .nav-pill.locked { opacity: 0.5; cursor: not-allowed; }
+
+    .container { max-width: 760px; margin: 0 auto; padding: 14px; }
+    .meta-box { background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--primary); border-radius: 6px; padding: 10px 14px; margin-bottom: 14px; font-size: 12px; color: var(--text-muted); }
+    h1 { font-size: 17px; color: var(--primary); margin: 6px 0 14px 0; line-height: 1.35; font-weight: bold; }
+
+    .flip-card-wrapper { perspective: 1000px; margin-bottom: 18px; }
+    .flip-card { width: 100%; height: 210px; cursor: pointer; user-select: none; }
+    .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: left; transition: transform 0.5s; transform-style: preserve-3d; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; }
+    .flip-front { background: linear-gradient(135deg, #003366 0%, #0b7285 100%); color: #fff; }
+    .flip-back { background: #fff; color: #212529; border: 2px solid var(--secondary); transform: rotateY(180deg); }
+    .card-tag { font-size: 11px; font-weight: bold; padding: 2px 8px; border-radius: 4px; width: fit-content; }
+    .card-tag-front { background: rgba(255,255,255,0.25); color: #fff; }
+    .card-tag-back { background: var(--secondary-light); color: var(--secondary); }
+    .card-q { font-size: 14.5px; font-weight: bold; line-height: 1.4; margin-top: 6px; }
+    .card-hint { font-size: 12px; color: #ffe066; }
+    .card-ans { font-size: 13px; line-height: 1.45; white-space: pre-line; }
+    .card-guide { font-size: 11px; text-align: right; color: rgba(255,255,255,0.7); }
+
+    .section-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    h2 { font-size: 14px; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; border-bottom: 1.5px solid var(--primary-light); padding-bottom: 6px; }
+
+    pre { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 10px; font-family: "D2Coding", Consolas, monospace; font-size: 12px; line-height: 1.4; overflow-x: auto; white-space: pre; }
+    .mn-item { background: #fff9db; border: 1px solid #ffe066; border-radius: 6px; padding: 8px 12px; margin-bottom: 8px; font-size: 12.5px; }
+    .mn-item strong { color: var(--accent); font-size: 13px; }
+
+    .table-box { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { width: 100%; min-width: 540px; border-collapse: collapse; font-size: 12px; }
+    th, td { border: 1px solid #dee2e6; padding: 8px 10px; vertical-align: middle; }
+    th { background: #f1f3f5; color: #495057; font-weight: bold; text-align: center; }
+    .badge-code { background: var(--primary); color: #fff; font-size: 11px; font-weight: bold; padding: 2px 6px; border-radius: 4px; display: inline-block; }
+
+    .mask { background-color: #343a40; color: #343a40; border-radius: 4px; padding: 1px 6px; cursor: pointer; user-select: none; display: inline-block; font-weight: bold; }
+    .mask.revealed { background-color: #fff3bf; color: var(--accent); border: 1px solid #ffd43b; }
+
+    .ref-box { background: #f1fcfc; border-left: 3px solid var(--secondary); padding: 8px 12px; font-size: 12px; border-radius: 4px; margin-bottom: 6px; line-height: 1.5; }
+    .ans-box { background: #f8f9fa; border: 1px dashed var(--primary); padding: 12px; font-size: 13px; border-radius: 6px; line-height: 1.5; }
+
+    .action-bar { display: flex; gap: 8px; margin-top: 20px; }
+    .btn { flex: 1; padding: 12px; font-size: 13px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; text-align: center; transition: background 0.2s; }
+    .btn-complete { background: #20c997; color: #fff; }
+    .btn-complete.done { background: #0ca678; }
+    .btn-mask-toggle { background: var(--primary); color: #fff; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>🚒 소방시설관리사 2차 점검실무 인출 대시보드</h1>
-      <p class="meta-desc">NFTC 기술기준 원문 · 소방시설 자체점검표 항목 · 기출 연계 인출 훈련</p>
-    </header>
 
-    <div class="filter-bar">
-      <input type="text" id="searchInput" placeholder="키워드(체절, 감압, 수원, 24회 등) 검색..." onkeyup="filterCards()">
+  <header>
+    <div class="header-title">🚒 소방시설관리사 2차 점검실무 35일 챌린지</div>
+    <div class="header-stats" id="progressSummary">진도 0 / 35</div>
+  </header>
+
+  <div class="dashboard-bar">
+    <div class="streak-badge" id="streakLabel">🔥 연속 학습 1일차</div>
+    <div class="mode-toggle" onclick="toggleFreeMode()">
+      <span id="modeIcon">🔒</span> <span id="modeText">데일리 모드 (오늘치 집중)</span>
     </div>
-
-    <div class="grid" id="cardContainer"></div>
   </div>
 
+  <div class="day-nav" id="dayNav"></div>
+  <div class="container" id="studyContent"></div>
+
+  <script src="data.js"></script>
   <script>
-    let studyData = [];
-    async function init() {
-      const container = document.getElementById('cardContainer');
-      try {
-        const res = await fetch('posts.json');
-        if (!res.ok) throw new Error('응답 코드: ' + res.status);
-        studyData = await res.json();
-        renderCards(studyData);
-      } catch (err) {
-        container.innerHTML = `<div class="error-msg">⚠️ posts.json 파일을 불러오지 못했습니다. (${err.message})</div>`;
-      }
+    let freeMode = localStorage.getItem("freeMode") === "true";
+    let completedDays = JSON.parse(localStorage.getItem("completedDays") || "[]");
+    let currentSelectedDay = 1;
+
+    function getTodayDayIndex() {
+      const start = new Date(START_DATE);
+      const now = new Date();
+      start.setHours(0,0,0,0);
+      now.setHours(0,0,0,0);
+      const diffDays = Math.floor((now - start) / (1000 * 60 * 60 * 24)) + 1;
+      return Math.max(1, Math.min(diffDays, 35));
     }
 
-    function renderCards(list) {
-      const container = document.getElementById('cardContainer');
-      container.innerHTML = '';
-      list.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <div class="card-top">
-            <div class="badges">
-              <span class="badge badge-day">${item.day}</span>
-              ${item.exam ? item.exam.map(e => `<span class="badge badge-exam">${e}</span>`).join('') : ''}
-              ${item.checklist ? item.checklist.map(c => `<span class="badge badge-chk">${c}</span>`).join('') : ''}
-            </div>
-            <span class="v-date">${item.verifiedAt || item.date}</span>
-          </div>
-          <div class="nftc-ref">📘 <strong>기준:</strong> ${item.nftc.join(' · ')}</div>
-          <a href="${item.file}" class="card-title">${item.title}</a>
-          <div class="tags">
-            ${item.keywords.map(k => `<span class="tag">#${k}</span>`).join('')}
-          </div>
-          <div class="btn-group">
-            <a href="${item.file}" class="btn btn-primary">📖 학습 및 인출(가리기) 모드</a>
-            <button onclick="printCard('${item.file}')" class="btn btn-outline">🖨️ A4 직접 인쇄</button>
-          </div>
-        `;
-        container.appendChild(card);
+    const todayDayIndex = getTodayDayIndex();
+
+    function init() {
+      currentSelectedDay = todayDayIndex;
+      renderNav();
+      renderDay(currentSelectedDay);
+      updateStats();
+    }
+
+    function toggleFreeMode() {
+      freeMode = !freeMode;
+      localStorage.setItem("freeMode", freeMode);
+      renderNav();
+      alert(freeMode ? "🔓 전체 자유 열람 모드가 활성화되었습니다. 모든 일차를 자유롭게 볼 수 있습니다." : "🔒 데일리 챌린지 모드가 켜졌습니다. 오늘까지의 학습에 집중합니다.");
+    }
+
+    function renderNav() {
+      const nav = document.getElementById("dayNav");
+      nav.innerHTML = "";
+      document.getElementById("modeIcon").innerText = freeMode ? "🔓" : "🔒";
+      document.getElementById("modeText").innerText = freeMode ? "자유 열람 모드" : "데일리 모드";
+
+      CURRICULUM_DATA.forEach(item => {
+        const pill = document.createElement("button");
+        pill.className = "nav-pill";
+        const isLocked = !freeMode && item.day > todayDayIndex;
+
+        pill.innerText = `Day ${item.day < 10 ? '0' + item.day : item.day}`;
+        if (item.day === currentSelectedDay) pill.classList.add("active");
+        if (item.day === todayDayIndex) pill.classList.add("today");
+        if (completedDays.includes(item.day)) pill.classList.add("completed");
+        if (isLocked) {
+          pill.classList.add("locked");
+          pill.innerText += " 🔒";
+        }
+
+        pill.onclick = () => {
+          if (isLocked) {
+            alert(`🔒 Day ${item.day}은 아직 오픈되지 않았습니다!\n(오픈 예정일에 열리며, 미리 보고 싶다면 상단의 자유 열람 모드를 켜세요.)`);
+            return;
+          }
+          currentSelectedDay = item.day;
+          renderNav();
+          renderDay(currentSelectedDay);
+        };
+        nav.appendChild(pill);
       });
     }
 
-    function printCard(url) {
-      const w = window.open(url, '_blank');
-      w.onload = function() { w.print(); };
+    function renderDay(dayNum) {
+      const data = CURRICULUM_DATA.find(d => d.day === dayNum) || CURRICULUM_DATA[0];
+      const isDone = completedDays.includes(data.day);
+      const content = document.getElementById("studyContent");
+
+      content.innerHTML = `
+        <div class="meta-box">
+          <span>📚 ${data.meta}</span>
+        </div>
+
+        <h1>[Day ${data.day < 10 ? '0' + data.day : data.day}] ${data.title}</h1>
+
+        <div class="flip-card-wrapper">
+          <div class="flip-card" onclick="this.classList.toggle('flipped')">
+            <div class="flip-card-inner">
+              <div class="flip-front">
+                <div>
+                  <span class="card-tag card-tag-front">Day ${data.day} 핵심 암기카드 (앞면)</span>
+                  <div class="card-q">${data.cardFront}</div>
+                </div>
+                <div class="card-hint">💡 힌트: ${data.cardHint}</div>
+                <div class="card-guide">👆 카드를 터치하면 뒷면 정답이 나타납니다.</div>
+              </div>
+              <div class="flip-back">
+                <div>
+                  <span class="card-tag card-tag-back">정답 및 핵심 인출 (뒷면)</span>
+                  <div class="card-ans">${data.cardBack}</div>
+                </div>
+                <div class="card-guide" style="color:var(--secondary)">다시 터치하면 앞면 ↺</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <h2>🧠 1. 머릿속 구조화 마인드맵</h2>
+          <pre>${renderMasks(data.mindmap)}</pre>
+        </div>
+
+        <div class="section-card">
+          <h2>💡 2. 핵심 두문자 암기 공식</h2>
+          ${data.mnemonics.map(m => `
+            <div class="mn-item">
+              <strong>[${m.tag}] "${m.rule}"</strong><br>
+              └── ${m.desc}
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="section-card">
+          <h2>📋 3. 소방시설 자체점검표(작동·종합) 체크리스트</h2>
+          <div class="table-box">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:18%">코드</th>
+                  <th style="width:28%">법정 점검항목</th>
+                  <th style="width:27%">양호 기준 (합격)</th>
+                  <th style="width:27%">주요 불량(X) 판정 사례</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${data.checklist.map(c => `
+                  <tr>
+                    <td style="text-align:center"><span class="badge-code">${c.code}</span></td>
+                    <td><strong>${c.name}</strong><br><small style="color:#666">${c.method}</small></td>
+                    <td>${renderMasks(c.pass)}</td>
+                    <td style="color:#c92a2a">${c.fail}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <h2>📖 4. 교재 및 실무 도면 참조 가이드</h2>
+          <div class="ref-box">
+            • <strong>소방청 점검·관리 매뉴얼:</strong> ${data.reference.manual}<br>
+            • <strong>화재안전기술기준(NFTC) 해설서:</strong> ${data.reference.guide}
+          </div>
+        </div>
+
+        <div class="section-card">
+          <h2>✍️ 5. 서술형 시험 답안 블록</h2>
+          <div class="ans-box">${renderMasks(data.answer)}</div>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn-mask-toggle" onclick="toggleAllMasks()">💡 빈칸 전체 보이기 / 가리기</button>
+          <button class="btn btn-complete ${isDone ? 'done' : ''}" onclick="toggleComplete(${data.day})">
+            ${isDone ? '✅ 학습 완료됨 (취소)' : '⭐ 오늘 학습 완료 도장 찍기'}
+          </button>
+        </div>
+      `;
+
+      document.querySelectorAll('.mask').forEach(m => {
+        m.addEventListener('click', () => m.classList.toggle('revealed'));
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function filterCards() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = studyData.filter(i => 
-        i.title.toLowerCase().includes(q) ||
-        i.facility.toLowerCase().includes(q) ||
-        (i.keywords && i.keywords.some(k => k.toLowerCase().includes(q))) ||
-        (i.exam && i.exam.some(e => e.toLowerCase().includes(q)))
-      );
-      renderCards(filtered);
+    function renderMasks(text) {
+      if (!text) return "";
+      return text.replace(/\[(.*?)\]/g, '<span class="mask">$1</span>');
     }
-    window.onload = init;
+
+    let maskRevealed = false;
+    function toggleAllMasks() {
+      maskRevealed = !maskRevealed;
+      document.querySelectorAll('.mask').forEach(m => {
+        if (maskRevealed) m.classList.add('revealed');
+        else m.classList.remove('revealed');
+      });
+    }
+
+    function toggleComplete(dayNum) {
+      if (completedDays.includes(dayNum)) {
+        completedDays = completedDays.filter(d => d !== dayNum);
+      } else {
+        completedDays.push(dayNum);
+      }
+      localStorage.setItem("completedDays", JSON.stringify(completedDays));
+      renderNav();
+      renderDay(dayNum);
+      updateStats();
+    }
+
+    function updateStats() {
+      const count = completedDays.length;
+      document.getElementById("progressSummary").innerText = `진도 ${count} / 35 (${Math.round(count/35*100)}%)`;
+      document.getElementById("streakLabel").innerText = `🔥 완료된 일차: ${count}개 완료`;
+    }
+
+    init();
   </script>
 </body>
 </html>
