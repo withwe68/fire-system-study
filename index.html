@@ -1,303 +1,747 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>소방시설관리사 2차 점검실무 35일 챌린지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#003366">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="관리사 2차">
+  <title>관리사 2차 점검실무</title>
   <style>
     :root {
-      --primary: #003366;
-      --primary-light: #e8f0fe;
-      --secondary: #0b7285;
-      --secondary-light: #e6fcf5;
-      --accent: #d9480f;
-      --bg: #f8f9fa;
-      --card-bg: #ffffff;
-      --text: #212529;
-      --text-muted: #6c757d;
-      --border: #dee2e6;
+      --primary: #003366; --primary-2: #0b4f8a; --primary-soft: #e7f0fb;
+      --teal: #0b7285; --teal-soft: #e3f6f8;
+      --accent: #d9480f; --accent-soft: #fff1e8;
+      --ok: #2b8a3e; --ok-soft: #ebfbee; --bad: #c92a2a; --bad-soft: #fff0f0;
+      --warn: #e67700; --warn-soft: #fff8db;
+      --bg: #f3f5f8; --card: #ffffff; --text: #1d232b; --muted: #66707c; --line: #e2e6eb;
+      --mask: #2f3640; --reveal: #fff3bf; --reveal-line: #f5c400;
+      --shadow: 0 1px 2px rgba(16,24,40,.05), 0 2px 8px rgba(16,24,40,.06);
+      --radius: 14px; --fs: 15px;
+      --tabbar-h: 60px; --safe-b: env(safe-area-inset-bottom, 0px);
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --primary: #8fb8ff; --primary-2: #a9c8ff; --primary-soft: #1b2738;
+        --teal: #5cc8d6; --teal-soft: #13282c; --accent: #ff8a4c; --accent-soft: #2e1d14;
+        --ok: #69db7c; --ok-soft: #142619; --bad: #ff8787; --bad-soft: #2c1616;
+        --warn: #ffc078; --warn-soft: #2b2312;
+        --bg: #0f1217; --card: #181c23; --text: #e8ebef; --muted: #9aa3ae; --line: #2a303a;
+        --mask: #4a5563; --reveal: #3a3313; --reveal-line: #a88a00;
+        --shadow: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --primary: #8fb8ff; --primary-2: #a9c8ff; --primary-soft: #1b2738;
+      --teal: #5cc8d6; --teal-soft: #13282c; --accent: #ff8a4c; --accent-soft: #2e1d14;
+      --ok: #69db7c; --ok-soft: #142619; --bad: #ff8787; --bad-soft: #2c1616;
+      --warn: #ffc078; --warn-soft: #2b2312;
+      --bg: #0f1217; --card: #181c23; --text: #e8ebef; --muted: #9aa3ae; --line: #2a303a;
+      --mask: #4a5563; --reveal: #3a3313; --reveal-line: #a88a00;
+      --shadow: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.5; font-size: 14px; padding-bottom: 50px; }
+    html { font-size: var(--fs); -webkit-text-size-adjust: 100%; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere;
+      padding-bottom: calc(var(--tabbar-h) + var(--safe-b) + 8px); }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    a { color: var(--primary-2); }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
-    header { background-color: var(--primary); color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; }
-    .header-title { font-size: 15px; font-weight: bold; }
-    .header-stats { font-size: 12px; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 12px; }
+    /* 상단 바 */
+    .appbar { position: sticky; top: 0; z-index: 50; background: var(--primary); color: #fff;
+      padding: calc(env(safe-area-inset-top, 0px) + 10px) 16px 10px; display: flex; align-items: center; gap: 10px; }
+    :root[data-theme="dark"] .appbar { background: #12233a; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .appbar { background: #12233a; } }
+    .appbar .ttl { font-weight: 700; font-size: 1rem; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .appbar .ttl small { font-weight: 500; opacity: .75; margin-left: 6px; font-size: .78rem; }
+    .chip-dday { background: rgba(255,255,255,.18); border-radius: 999px; padding: 3px 10px; font-size: .78rem; font-weight: 700; }
+    .icon-btn { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: #fff; font-size: 1.1rem; }
+    .icon-btn:active { background: rgba(255,255,255,.15); }
 
-    .dashboard-bar { background: #fff; border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
-    .streak-badge { font-weight: bold; color: var(--accent); }
-    .mode-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--secondary); font-weight: bold; }
+    /* 하단 탭바 */
+    .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: var(--card); border-top: 1px solid var(--line);
+      display: grid; grid-template-columns: repeat(4, 1fr); padding-bottom: var(--safe-b); height: calc(var(--tabbar-h) + var(--safe-b)); }
+    .tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: .72rem; color: var(--muted); position: relative; }
+    .tab .ico { font-size: 1.25rem; line-height: 1; }
+    .tab.on { color: var(--primary-2); font-weight: 700; }
+    .tab .badge { position: absolute; top: 6px; left: calc(50% + 6px); background: var(--accent); color: #fff; border-radius: 999px; font-size: .65rem; padding: 0 6px; min-width: 18px; line-height: 18px; text-align: center; }
 
-    .day-nav { display: flex; overflow-x: auto; padding: 10px 14px; gap: 8px; background: #fff; border-bottom: 1px solid var(--border); -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-    .day-nav::-webkit-scrollbar { display: none; }
-    .nav-pill { flex: 0 0 auto; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid var(--border); background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
-    .nav-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-    .nav-pill.today { border: 2px solid var(--accent); color: var(--accent); background: #fff; }
-    .nav-pill.active.today { background: var(--accent); color: #fff; }
-    .nav-pill.completed::after { content: " ✓"; color: #20c997; font-weight: bold; }
-    .nav-pill.locked { opacity: 0.5; cursor: not-allowed; }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 14px 16px 24px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; margin-bottom: 14px; }
+    .card h2 { font-size: 1.02rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .card h2 .sub { margin-left: auto; font-size: .78rem; color: var(--muted); font-weight: 500; }
+    .muted { color: var(--muted); }
+    .small { font-size: .85rem; }
+    .row { display: flex; align-items: center; gap: 8px; }
+    .grow { flex: 1; min-width: 0; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 10px 16px; border-radius: 12px; font-weight: 700; font-size: .92rem; }
+    .btn-primary { background: var(--primary-2); color: #fff; }
+    :root[data-theme="dark"] .btn-primary { color: #0f1217; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-primary { color: #0f1217; } }
+    .btn-ghost { background: var(--primary-soft); color: var(--primary-2); }
+    .btn-line { border: 1px solid var(--line); background: var(--card); }
+    .btn-block { width: 100%; }
+    .btn[disabled] { opacity: .45; }
 
-    .container { max-width: 760px; margin: 0 auto; padding: 14px; }
-    .meta-box { background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--primary); border-radius: 6px; padding: 10px 14px; margin-bottom: 14px; font-size: 12px; color: var(--text-muted); }
-    h1 { font-size: 17px; color: var(--primary); margin: 6px 0 14px 0; line-height: 1.35; font-weight: bold; }
+    /* 홈 */
+    .hero { background: linear-gradient(135deg, #003366, #0b7285); color: #fff; border: 0; }
+    .hero .k { font-size: .8rem; opacity: .85; }
+    .hero .t { font-size: 1.15rem; font-weight: 800; margin: 4px 0 10px; line-height: 1.4; }
+    .hero .btn { background: #fff; color: #003366; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+    .stat { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 8px; text-align: center; }
+    .stat b { display: block; font-size: 1.25rem; color: var(--primary-2); }
+    .stat span { font-size: .75rem; color: var(--muted); }
+    .part-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+    .part-row:last-child { border-bottom: 0; }
+    .bar { grid-column: 1 / -1; height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; }
+    .bar i { display: block; height: 100%; border-radius: 99px; }
+    .pdot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 
-    .flip-card-wrapper { perspective: 1000px; margin-bottom: 18px; }
-    .flip-card { width: 100%; height: 210px; cursor: pointer; user-select: none; }
-    .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: left; transition: transform 0.5s; transform-style: preserve-3d; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
-    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
-    .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; }
-    .flip-front { background: linear-gradient(135deg, #003366 0%, #0b7285 100%); color: #fff; }
-    .flip-back { background: #fff; color: #212529; border: 2px solid var(--secondary); transform: rotateY(180deg); }
-    .card-tag { font-size: 11px; font-weight: bold; padding: 2px 8px; border-radius: 4px; width: fit-content; }
-    .card-tag-front { background: rgba(255,255,255,0.25); color: #fff; }
-    .card-tag-back { background: var(--secondary-light); color: var(--secondary); }
-    .card-q { font-size: 14.5px; font-weight: bold; line-height: 1.4; margin-top: 6px; }
-    .card-hint { font-size: 12px; color: #ffe066; }
-    .card-ans { font-size: 13px; line-height: 1.45; white-space: pre-line; }
-    .card-guide { font-size: 11px; text-align: right; color: rgba(255,255,255,0.7); }
+    /* 학습 화면 */
+    .dayhead .k { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+    .tag { font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-2); }
+    .tag.part { color: #fff; }
+    .tag.warn { background: var(--warn-soft); color: var(--warn); }
+    .dayhead h1 { font-size: 1.22rem; line-height: 1.4; margin-bottom: 6px; }
+    details.meta summary { font-size: .8rem; color: var(--muted); cursor: pointer; list-style: none; }
+    details.meta summary::-webkit-details-marker { display: none; }
+    details.meta p { font-size: .82rem; color: var(--muted); margin-top: 6px; }
+    .fix { background: var(--warn-soft); border: 1px solid color-mix(in srgb, var(--warn) 35%, transparent); border-radius: 12px; padding: 10px 12px; margin: 10px 0 0; }
+    .fix summary { font-weight: 700; font-size: .86rem; color: var(--warn); cursor: pointer; }
+    .fix ul { list-style: none; margin-top: 8px; display: grid; gap: 8px; }
+    .fix li { font-size: .84rem; background: var(--card); border-radius: 10px; padding: 8px 10px; border: 1px solid var(--line); }
+    .fix .was { color: var(--bad); text-decoration: line-through; text-decoration-thickness: 1px; }
+    .fix .now { color: var(--ok); font-weight: 700; }
+    .fix .basis { color: var(--muted); font-size: .76rem; }
 
-    .section-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-    h2 { font-size: 14px; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; border-bottom: 1.5px solid var(--primary-light); padding-bottom: 6px; }
+    .steps { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 56px); z-index: 40; background: var(--bg); margin: 0 -16px 10px; padding: 8px 16px; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--line); }
+    .steps::-webkit-scrollbar { display: none; }
+    .step-chip { flex: 0 0 auto; min-height: 36px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); font-size: .8rem; font-weight: 700; color: var(--muted); }
+    .step-chip.on { background: var(--primary-2); border-color: var(--primary-2); color: #fff; }
+    :root[data-theme="dark"] .step-chip.on { color: #0f1217; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .step-chip.on { color: #0f1217; } }
+    .step-chip.done { color: var(--ok); border-color: var(--ok); }
+    .modeseg { display: inline-flex; background: var(--line); border-radius: 10px; padding: 3px; margin-top: 10px; }
+    .modeseg button { padding: 6px 12px; border-radius: 8px; font-size: .8rem; font-weight: 700; color: var(--muted); min-height: 32px; }
+    .modeseg button.on { background: var(--card); color: var(--text); box-shadow: var(--shadow); }
 
-    pre { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 10px; font-family: "D2Coding", Consolas, monospace; font-size: 12px; line-height: 1.4; overflow-x: auto; white-space: pre; }
-    .mn-item { background: #fff9db; border: 1px solid #ffe066; border-radius: 6px; padding: 8px 12px; margin-bottom: 8px; font-size: 12.5px; }
-    .mn-item strong { color: var(--accent); font-size: 13px; }
+    .sec { scroll-margin-top: 120px; }
+    .sec-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .sec-head h2 { margin: 0; font-size: 1.02rem; }
+    .sec-head .tool { margin-left: auto; font-size: .78rem; font-weight: 700; color: var(--primary-2); padding: 6px 10px; border-radius: 8px; background: var(--primary-soft); min-height: 32px; }
+    .guide { font-size: .82rem; color: var(--muted); margin-bottom: 10px; }
 
-    .table-box { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    table { width: 100%; min-width: 540px; border-collapse: collapse; font-size: 12px; }
-    th, td { border: 1px solid #dee2e6; padding: 8px 10px; vertical-align: middle; }
-    th { background: #f1f3f5; color: #495057; font-weight: bold; text-align: center; }
-    .badge-code { background: var(--primary); color: #fff; font-size: 11px; font-weight: bold; padding: 2px 6px; border-radius: 4px; display: inline-block; }
+    /* 플립 카드 (높이 자동) */
+    .flip { perspective: 1200px; cursor: pointer; user-select: none; }
+    .flip-in { display: grid; transition: transform .45s; transform-style: preserve-3d; }
+    .flip.on .flip-in { transform: rotateY(180deg); }
+    .face { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: var(--radius); padding: 18px; min-height: 190px; display: flex; flex-direction: column; gap: 10px; }
+    .face.front { background: linear-gradient(135deg, #003366, #0b7285); color: #fff; }
+    .face.back { background: var(--card); border: 2px solid var(--teal); transform: rotateY(180deg); }
+    .face .lbl { font-size: .72rem; font-weight: 700; opacity: .85; }
+    .face .q { font-size: 1.05rem; font-weight: 800; line-height: 1.5; }
+    .face .a { white-space: pre-line; font-size: .95rem; }
+    .face .foot { margin-top: auto; font-size: .74rem; opacity: .8; text-align: right; }
+    .hint-btn { align-self: flex-start; background: rgba(255,255,255,.18); color: #fff; border-radius: 8px; padding: 6px 10px; font-size: .8rem; font-weight: 700; min-height: 32px; }
+    .hint { color: #ffe066; font-size: .86rem; }
 
-    .mask { background-color: #343a40; color: #343a40; border-radius: 4px; padding: 1px 6px; cursor: pointer; user-select: none; display: inline-block; font-weight: bold; }
-    .mask.revealed { background-color: #fff3bf; color: var(--accent); border: 1px solid #ffd43b; }
+    /* 마스킹 */
+    .mask { background: var(--mask); color: transparent; border-radius: 6px; padding: 0 6px; cursor: pointer; user-select: none; box-decoration-break: clone; -webkit-box-decoration-break: clone; min-width: 2.2em; display: inline; }
+    .mask::selection { color: transparent; }
+    .mask.on { background: var(--reveal); color: var(--accent); font-weight: 700; outline: 1px solid var(--reveal-line); }
+    .code { font-family: ui-monospace, "D2Coding", Consolas, monospace; font-size: .78rem; font-weight: 700; background: var(--primary-2); color: #fff; border-radius: 6px; padding: 1px 6px; white-space: nowrap; }
+    :root[data-theme="dark"] .code { color: #0f1217; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .code { color: #0f1217; } }
+    .grp { }
 
-    .ref-box { background: #f1fcfc; border-left: 3px solid var(--secondary); padding: 8px 12px; font-size: 12px; border-radius: 4px; margin-bottom: 6px; line-height: 1.5; }
-    .ans-box { background: #f8f9fa; border: 1px dashed var(--primary); padding: 12px; font-size: 13px; border-radius: 6px; line-height: 1.5; }
+    /* 마인드맵 → 모바일 트리 */
+    .mm-root { font-weight: 800; color: var(--primary-2); margin-bottom: 8px; font-size: 1rem; }
+    .mm-node { border-left: 3px solid var(--primary-soft); padding: 6px 0 6px 12px; margin-left: 2px; }
+    .mm-node.d2 { margin-left: 18px; border-left-style: dashed; }
+    .mm-label { font-weight: 800; font-size: .9rem; margin-bottom: 4px; }
+    .mm-body { display: flex; flex-wrap: wrap; gap: 6px; font-size: .9rem; }
+    .mm-chip { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 4px 10px; line-height: 1.7; }
 
-    .action-bar { display: flex; gap: 8px; margin-top: 20px; }
-    .btn { flex: 1; padding: 12px; font-size: 13px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; text-align: center; transition: background 0.2s; }
-    .btn-complete { background: #20c997; color: #fff; }
-    .btn-complete.done { background: #0ca678; }
-    .btn-mask-toggle { background: var(--primary); color: #fff; }
+    .mn { background: var(--warn-soft); border: 1px solid color-mix(in srgb, var(--warn) 30%, transparent); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; }
+    .mn .r { font-weight: 800; color: var(--accent); }
+    .mn .d { font-size: .88rem; margin-top: 2px; }
+
+    .triad-topic { font-weight: 800; color: var(--primary-2); margin: 4px 0 8px; font-size: .95rem; }
+    .seg { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--line); border-radius: 10px; padding: 3px; gap: 3px; margin-bottom: 8px; }
+    .seg button { min-height: 36px; border-radius: 8px; font-size: .78rem; font-weight: 700; color: var(--muted); }
+    .seg button.on { background: var(--card); color: var(--text); box-shadow: var(--shadow); }
+    .tri { white-space: pre-line; font-size: .9rem; border-radius: 12px; padding: 12px; border: 1px solid var(--line); display: none; }
+    .tri .tl { font-size: .72rem; font-weight: 800; margin-bottom: 4px; display: block; }
+    .tri.n { background: var(--primary-soft); } .tri.n .tl { color: var(--primary-2); }
+    .tri.c { background: var(--warn-soft); } .tri.c .tl { color: var(--warn); }
+    .tri.m { background: var(--ok-soft); } .tri.m .tl { color: var(--ok); }
+    .triad[data-tab="0"] .tri.n, .triad[data-tab="1"] .tri.c, .triad[data-tab="2"] .tri.m { display: block; }
+    .triad + .triad { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line); }
+
+    .chk { border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+    .chk .top { display: flex; gap: 8px; align-items: flex-start; }
+    .chk .off { font-size: .8rem; color: var(--muted); margin-top: 2px; }
+    .chk .nm { font-weight: 800; font-size: .93rem; margin-top: 6px; }
+    .chk .how { font-size: .84rem; color: var(--muted); margin-top: 2px; }
+    .verdict { display: grid; gap: 6px; margin-top: 8px; font-size: .88rem; }
+    .verdict div { border-radius: 10px; padding: 8px 10px; }
+    .verdict .p { background: var(--ok-soft); } .verdict .p b { color: var(--ok); }
+    .verdict .f { background: var(--bad-soft); } .verdict .f b { color: var(--bad); }
+
+    .ans { white-space: pre-line; font-size: .95rem; line-height: 1.75; background: var(--bg); border: 1px dashed var(--primary-2); border-radius: 12px; padding: 14px; }
+    .ans.blank { color: transparent; text-shadow: none; }
+    .ans.blank .mask, .ans.blank .code { visibility: hidden; }
+    .ref { font-size: .85rem; background: var(--teal-soft); border-left: 3px solid var(--teal); border-radius: 8px; padding: 10px 12px; }
+    .ref div + div { margin-top: 4px; }
+
+    .rate { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .rate button { border: 1px solid var(--line); background: var(--card); border-radius: 12px; padding: 12px 6px; font-weight: 800; font-size: .9rem; min-height: 64px; }
+    .rate button small { display: block; font-weight: 500; color: var(--muted); font-size: .72rem; margin-top: 2px; }
+    .rate button.sel { border-color: var(--primary-2); background: var(--primary-soft); }
+
+    .stepnav { position: fixed; left: 0; right: 0; bottom: calc(var(--tabbar-h) + var(--safe-b)); z-index: 55; background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-top: 1px solid var(--line); }
+    .stepnav .in { max-width: 860px; margin: 0 auto; padding: 8px 16px; display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+    .stepnav .cnt { font-size: .8rem; color: var(--muted); font-weight: 700; }
+    body.has-stepnav { padding-bottom: calc(var(--tabbar-h) + var(--safe-b) + 72px); }
+
+    /* 목차 */
+    .search { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); padding: 10px 14px; font-size: 1rem; margin-bottom: 12px; }
+    .toc-part { margin-bottom: 16px; }
+    .toc-part h3 { font-size: .9rem; display: flex; align-items: center; gap: 8px; margin: 0 2px 8px; }
+    .toc-item { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin-bottom: 6px; min-height: 52px; }
+    .toc-item .n { font-weight: 800; font-size: .78rem; color: var(--muted); width: 44px; flex: 0 0 auto; }
+    .toc-item .t { flex: 1; min-width: 0; font-size: .9rem; line-height: 1.4; }
+    .toc-item .s { flex: 0 0 auto; font-size: .9rem; }
+    .toc-item.today { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+    .toc-item.cp { background: var(--teal-soft); }
+    .toc-item.locked { opacity: .55; }
+
+    /* 복습 세션 */
+    .rv-q { font-size: 1.08rem; font-weight: 800; line-height: 1.5; }
+    .rv-a { white-space: pre-line; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); }
+    .list { list-style: none; }
+    .list li { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px dashed var(--line); font-size: .9rem; }
+    .list li:last-child { border-bottom: 0; }
+
+    /* 설정 */
+    .set-row { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px dashed var(--line); flex-wrap: wrap; }
+    .set-row:last-child { border-bottom: 0; }
+    .set-row label { flex: 1; min-width: 140px; font-weight: 700; font-size: .92rem; }
+    .opt { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+    .opt button { border: 1px solid var(--line); border-radius: 10px; padding: 6px 12px; min-height: 38px; font-size: .84rem; font-weight: 700; background: var(--card); }
+    .opt button.on { border-color: var(--primary-2); background: var(--primary-soft); color: var(--primary-2); }
+    input[type="date"] { min-height: 40px; border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; background: var(--card); color: var(--text); font: inherit; }
+
+    .toast { position: fixed; left: 50%; bottom: calc(var(--tabbar-h) + var(--safe-b) + 84px); transform: translateX(-50%); background: #1d232b; color: #fff; padding: 10px 16px; border-radius: 12px; font-size: .88rem; z-index: 99; opacity: 0; transition: opacity .2s; pointer-events: none; max-width: calc(100% - 32px); }
+    .toast.on { opacity: .95; }
+
+    @media (min-width: 760px) {
+      .wrap { padding: 20px 24px 32px; }
+      .seg { display: none; }
+      .tri-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .tri { display: block !important; }
+      .verdict { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1100px) {
+      .tabbar { top: 0; bottom: auto; left: auto; right: 24px; width: 380px; height: 56px; border: 0; background: transparent; padding: 0; }
+      .tab { color: rgba(255,255,255,.75); flex-direction: row; gap: 6px; font-size: .85rem; }
+      .tab.on { color: #fff; }
+      .tab .badge { top: 8px; left: auto; right: 6px; }
+      body { padding-bottom: 24px; } body.has-stepnav { padding-bottom: 90px; }
+      .appbar { padding-right: 420px; }
+      .stepnav { bottom: 0; }
+      .steps { top: 56px; }
+      .toast { bottom: 100px; }
+    }
+    @media print { .appbar, .tabbar, .stepnav, .steps { display: none !important; } body { padding: 0; } }
+    @media (prefers-reduced-motion: reduce) { .flip-in { transition: none; } }
   </style>
 </head>
 <body>
-
-  <header>
-    <div class="header-title">🚒 소방시설관리사 2차 점검실무 35일 챌린지</div>
-    <div class="header-stats" id="progressSummary">진도 0 / 35</div>
+  <header class="appbar">
+    <div class="ttl" id="appTitle">🚒 관리사 2차 <small>점검·관리실무</small></div>
+    <span class="chip-dday" id="dday" hidden></span>
+    <button class="icon-btn" onclick="go('#/settings')" aria-label="설정">⚙︎</button>
   </header>
 
-  <div class="dashboard-bar">
-    <div class="streak-badge" id="streakLabel">🔥 연속 학습 1일차</div>
-    <div class="mode-toggle" onclick="toggleFreeMode()">
-      <span id="modeIcon">🔒</span> <span id="modeText">데일리 모드 (오늘치 집중)</span>
-    </div>
-  </div>
+  <main class="wrap" id="view" aria-live="polite"></main>
 
-  <div class="day-nav" id="dayNav"></div>
-  <div class="container" id="studyContent"></div>
+  <nav class="tabbar" aria-label="주 메뉴">
+    <button class="tab" data-tab="home" onclick="go('#/home')"><span class="ico">🏠</span>홈</button>
+    <button class="tab" data-tab="study" onclick="go('#/today')"><span class="ico">📘</span>오늘 학습</button>
+    <button class="tab" data-tab="review" onclick="go('#/review')"><span class="ico">🔁</span>복습<span class="badge" id="dueBadge" hidden></span></button>
+    <button class="tab" data-tab="toc" onclick="go('#/toc')"><span class="ico">📚</span>목차</button>
+  </nav>
+  <div class="toast" id="toast" role="status"></div>
+  <noscript><p style="padding:16px">이 학습 페이지는 JavaScript가 필요합니다.</p></noscript>
 
   <script src="data.js"></script>
   <script>
-    let freeMode = localStorage.getItem("freeMode") === "true";
-    let completedDays = JSON.parse(localStorage.getItem("completedDays") || "[]");
-    let currentSelectedDay = 1;
+  // ================= 저장소 (실패해도 동작) =================
+  const mem = {};
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v === null ? (k in mem ? mem[k] : d) : JSON.parse(v); } catch (e) { return k in mem ? mem[k] : d; } },
+    set(k, v) { mem[k] = v; try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  // 기존 키(completedDays, freeMode) 그대로 사용 → 기존 진도 유지
+  let completed = new Set(store.get('completedDays', []).map(Number));
+  let freeMode = store.get('freeMode', false) === true || store.get('freeMode', false) === 'true';
+  let srs = store.get('fss.srs', {});           // {day: {stage, due, last, hist}}
+  let cpDone = new Set(store.get('fss.cpDone', []));
+  let settings = Object.assign({ font: 1, theme: 'auto', examDate: '', view: 'step' }, store.get('fss.settings', {}));
+  const saveAll = () => { store.set('completedDays', [...completed].sort((a, b) => a - b)); store.set('freeMode', freeMode); store.set('fss.srs', srs); store.set('fss.cpDone', [...cpDone]); store.set('fss.settings', settings); };
 
-    function getTodayDayIndex() {
-      const start = new Date(START_DATE);
-      const now = new Date();
-      start.setHours(0,0,0,0);
-      now.setHours(0,0,0,0);
-      const diffDays = Math.floor((now - start) / (1000 * 60 * 60 * 24)) + 1;
-      return Math.max(1, Math.min(diffDays, 35));
-    }
+  // ================= 날짜·스케줄 =================
+  const DAY_MS = 864e5;
+  const ymd = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const parseYmd = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+  const today0 = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+  const addDays = (s, n) => { const d = parseYmd(s); d.setDate(d.getDate() + n); return ymd(d); };
+  const TODAY = ymd(today0());
+  const PLAN = STUDY_PLAN;
+  const planIndexOfToday = () => Math.max(1, Math.min(PLAN.length, Math.round((today0() - parseYmd(START_DATE)) / DAY_MS) + 1));
+  const TODAY_IDX = planIndexOfToday();
+  const planIdxOfDay = n => PLAN.findIndex(p => p.type === 'day' && p.day === n) + 1;
+  const planIdxOfCp = id => PLAN.findIndex(p => p.type === 'review' && p.id === id) + 1;
+  const dateOfIdx = i => addDays(START_DATE, i - 1);
+  const isLocked = idx => !freeMode && idx > TODAY_IDX;
+  const dayData = n => CURRICULUM_DATA.find(d => d.day === n);
+  const partOf = id => PARTS.find(p => p.id === id);
+  const pad2 = n => String(n).padStart(2, '0');
+  const fmtDate = s => { const d = parseYmd(s); return `${d.getMonth() + 1}월 ${d.getDate()}일(${'일월화수목금토'[d.getDay()]})`; };
 
-    const todayDayIndex = getTodayDayIndex();
+  // ================= SRS(간격반복) =================
+  const INTERVALS = [1, 3, 7, 14, 30, 60];
+  function rateDay(n, r) { // r: 0 다시, 1 보통, 2 쉬움
+    const cur = srs[n];
+    let stage = !cur ? r : (r === 0 ? 0 : Math.min(cur.stage + r, INTERVALS.length - 1));
+    srs[n] = { stage, due: addDays(TODAY, INTERVALS[stage]), last: TODAY, r, hist: [...(cur?.hist || []), [TODAY, r]].slice(-12) };
+    completed.add(n); saveAll(); updateBadges();
+  }
+  const dueDays = () => Object.entries(srs).filter(([, v]) => v.due <= TODAY).map(([k]) => +k).sort((a, b) => srs[a].due.localeCompare(srs[b].due) || a - b);
 
-    function init() {
-      currentSelectedDay = todayDayIndex;
-      renderNav();
-      renderDay(currentSelectedDay);
-      updateStats();
-    }
-
-    function toggleFreeMode() {
-      freeMode = !freeMode;
-      localStorage.setItem("freeMode", freeMode);
-      renderNav();
-      alert(freeMode ? "🔓 전체 자유 열람 모드가 활성화되었습니다. 모든 일차를 자유롭게 볼 수 있습니다." : "🔒 데일리 챌린지 모드가 켜졌습니다. 오늘까지의 학습에 집중합니다.");
-    }
-
-    function renderNav() {
-      const nav = document.getElementById("dayNav");
-      nav.innerHTML = "";
-      document.getElementById("modeIcon").innerText = freeMode ? "🔓" : "🔒";
-      document.getElementById("modeText").innerText = freeMode ? "자유 열람 모드" : "데일리 모드";
-
-      CURRICULUM_DATA.forEach(item => {
-        const pill = document.createElement("button");
-        pill.className = "nav-pill";
-        const isLocked = !freeMode && item.day > todayDayIndex;
-
-        pill.innerText = `Day ${item.day < 10 ? '0' + item.day : item.day}`;
-        if (item.day === currentSelectedDay) pill.classList.add("active");
-        if (item.day === todayDayIndex) pill.classList.add("today");
-        if (completedDays.includes(item.day)) pill.classList.add("completed");
-        if (isLocked) {
-          pill.classList.add("locked");
-          pill.innerText += " 🔒";
-        }
-
-        pill.onclick = () => {
-          if (isLocked) {
-            alert(`🔒 Day ${item.day}은 아직 오픈되지 않았습니다!\n(오픈 예정일에 열리며, 미리 보고 싶다면 상단의 자유 열람 모드를 켜세요.)`);
-            return;
-          }
-          currentSelectedDay = item.day;
-          renderNav();
-          renderDay(currentSelectedDay);
-        };
-        nav.appendChild(pill);
-      });
-    }
-
-    function renderDay(dayNum) {
-      const data = CURRICULUM_DATA.find(d => d.day === dayNum) || CURRICULUM_DATA[0];
-      const isDone = completedDays.includes(data.day);
-      const content = document.getElementById("studyContent");
-
-      content.innerHTML = `
-        <div class="meta-box">
-          <span>📚 ${data.meta}</span>
-        </div>
-
-        <h1>[Day ${data.day < 10 ? '0' + data.day : data.day}] ${data.title}</h1>
-
-        <div class="flip-card-wrapper">
-          <div class="flip-card" onclick="this.classList.toggle('flipped')">
-            <div class="flip-card-inner">
-              <div class="flip-front">
-                <div>
-                  <span class="card-tag card-tag-front">Day ${data.day} 핵심 암기카드 (앞면)</span>
-                  <div class="card-q">${data.cardFront}</div>
-                </div>
-                <div class="card-hint">💡 힌트: ${data.cardHint}</div>
-                <div class="card-guide">👆 카드를 터치하면 뒷면 정답이 나타납니다.</div>
-              </div>
-              <div class="flip-back">
-                <div>
-                  <span class="card-tag card-tag-back">정답 및 핵심 인출 (뒷면)</span>
-                  <div class="card-ans">${data.cardBack}</div>
-                </div>
-                <div class="card-guide" style="color:var(--secondary)">다시 터치하면 앞면 ↺</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-card">
-          <h2>🧠 1. 머릿속 구조화 마인드맵</h2>
-          <pre>${renderMasks(data.mindmap)}</pre>
-        </div>
-
-        <div class="section-card">
-          <h2>💡 2. 핵심 두문자 암기 공식</h2>
-          ${data.mnemonics.map(m => `
-            <div class="mn-item">
-              <strong>[${m.tag}] "${m.rule}"</strong><br>
-              └── ${m.desc}
-            </div>
-          `).join('')}
-        </div>
-
-        <div class="section-card">
-          <h2>📋 3. 소방시설 자체점검표(작동·종합) 체크리스트</h2>
-          <div class="table-box">
-            <table>
-              <thead>
-                <tr>
-                  <th style="width:18%">코드</th>
-                  <th style="width:28%">법정 점검항목</th>
-                  <th style="width:27%">양호 기준 (합격)</th>
-                  <th style="width:27%">주요 불량(X) 판정 사례</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${data.checklist.map(c => `
-                  <tr>
-                    <td style="text-align:center"><span class="badge-code">${c.code}</span></td>
-                    <td><strong>${c.name}</strong><br><small style="color:#666">${c.method}</small></td>
-                    <td>${renderMasks(c.pass)}</td>
-                    <td style="color:#c92a2a">${c.fail}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="section-card">
-          <h2>📖 4. 교재 및 실무 도면 참조 가이드</h2>
-          <div class="ref-box">
-            • <strong>소방청 점검·관리 매뉴얼:</strong> ${data.reference.manual}<br>
-            • <strong>화재안전기술기준(NFTC) 해설서:</strong> ${data.reference.guide}
-          </div>
-        </div>
-
-        <div class="section-card">
-          <h2>✍️ 5. 서술형 시험 답안 블록</h2>
-          <div class="ans-box">${renderMasks(data.answer)}</div>
-        </div>
-
-        <div class="action-bar">
-          <button class="btn btn-mask-toggle" onclick="toggleAllMasks()">💡 빈칸 전체 보이기 / 가리기</button>
-          <button class="btn btn-complete ${isDone ? 'done' : ''}" onclick="toggleComplete(${data.day})">
-            ${isDone ? '✅ 학습 완료됨 (취소)' : '⭐ 오늘 학습 완료 도장 찍기'}
-          </button>
-        </div>
-      `;
-
-      document.querySelectorAll('.mask').forEach(m => {
-        m.addEventListener('click', () => m.classList.toggle('revealed'));
-      });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function renderMasks(text) {
-      if (!text) return "";
-      return text.replace(/\[(.*?)\]/g, '<span class="mask">$1</span>');
-    }
-
-    let maskRevealed = false;
-    function toggleAllMasks() {
-      maskRevealed = !maskRevealed;
-      document.querySelectorAll('.mask').forEach(m => {
-        if (maskRevealed) m.classList.add('revealed');
-        else m.classList.remove('revealed');
-      });
-    }
-
-    function toggleComplete(dayNum) {
-      if (completedDays.includes(dayNum)) {
-        completedDays = completedDays.filter(d => d !== dayNum);
-      } else {
-        completedDays.push(dayNum);
+  // ================= 텍스트 렌더 (중첩 안전 빈칸) =================
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const CODE_RE = /^(\d{1,2}-[A-Z]-\d{3})$/;
+  // [..] 안에 [..]가 있으면 "묶음"(가리지 않음), 가장 안쪽 [..]만 빈칸. 점검코드는 코드칩으로 표시
+  function rich(text) {
+    const s = esc(text); let i = 0;
+    function parse(depth) {
+      let html = '', raw = '', nested = false;
+      while (i < s.length) {
+        const ch = s[i];
+        if (ch === '[') {
+          i++; const g = parse(depth + 1);
+          if (!g.closed) { html += '[' + g.html; raw += '[' + g.raw; continue; }
+          nested = true; raw += g.raw;
+          if (g.nested) html += `<span class="grp">${g.html}</span>`;
+          else if (CODE_RE.test(g.raw.trim())) html += `<span class="code">${g.raw.trim()}</span>`;
+          else html += `<span class="mask" role="button" tabindex="0" aria-label="빈칸 (눌러서 보기)">${g.html}</span>`;
+        } else if (ch === ']' && depth > 0) { i++; return { html, raw, nested, closed: true }; }
+        else { html += ch; raw += ch; i++; }
       }
-      localStorage.setItem("completedDays", JSON.stringify(completedDays));
-      renderNav();
-      renderDay(dayNum);
-      updateStats();
+      return { html, raw, nested, closed: false };
     }
-
-    function updateStats() {
-      const count = completedDays.length;
-      document.getElementById("progressSummary").innerText = `진도 ${count} / 35 (${Math.round(count/35*100)}%)`;
-      document.getElementById("streakLabel").innerText = `🔥 완료된 일차: ${count}개 완료`;
+    return parse(0).html;
+  }
+  // 최상위 ' / ' 기준 분리 (괄호 깊이 0에서만)
+  function splitTop(str) {
+    const out = []; let depth = 0, buf = '';
+    for (let k = 0; k < str.length; k++) {
+      const c = str[k];
+      if (c === '[') depth++; if (c === ']') depth--;
+      if (depth === 0 && str.startsWith(' / ', k)) { out.push(buf); buf = ''; k += 2; continue; }
+      buf += c;
     }
+    out.push(buf); return out.map(x => x.trim()).filter(Boolean);
+  }
+  function unwrapOuter(str) {
+    str = str.trim(); if (!str.startsWith('[')) return null;
+    let depth = 0;
+    for (let k = 0; k < str.length; k++) { if (str[k] === '[') depth++; if (str[k] === ']') { depth--; if (depth === 0) return k === str.length - 1 ? str.slice(1, -1) : null; } }
+    return null;
+  }
+  function mindmap(text) {
+    const lines = String(text || '').split('\n').filter(l => l.trim());
+    if (!lines.length) return '';
+    let html = '';
+    const root = unwrapOuter(lines[0]);
+    let start = 0;
+    if (root !== null && !/[├└]/.test(lines[0])) { html += `<div class="mm-root">${esc(root)}</div>`; start = 1; }
+    for (const line of lines.slice(start)) {
+      const lead = (line.match(/^[\s│]*/) || [''])[0];
+      const depth = lead.replace(/\s/g, '').length > 0 || lead.length >= 6 ? 2 : 1;
+      let body = line.replace(/^[\s│]*[├└]─+\s*/, '').trim();
+      let label = '';
+      const m = body.match(/^(.*?)\s*─{2,}\s*(.*)$/);
+      if (m) { label = m[1]; body = m[2]; }
+      const inner = unwrapOuter(body);
+      const parts = inner !== null ? splitTop(inner) : [body];
+      html += `<div class="mm-node d${depth}">${label ? `<div class="mm-label">${rich(label)}</div>` : ''}<div class="mm-body">${parts.map(p => `<span class="mm-chip">${rich(p)}</span>`).join('')}</div></div>`;
+    }
+    return html;
+  }
 
-    init();
+  // ================= 라우터 =================
+  const view = document.getElementById('view');
+  function go(h) { if (location.hash === h) route(); else location.hash = h; }
+  window.addEventListener('hashchange', route);
+  function setTab(t) { document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.tab === t)); }
+  function route() {
+    document.body.classList.remove('has-stepnav');
+    document.querySelector('.stepnav')?.remove();
+    const h = location.hash || '#/home';
+    let m;
+    if (h === '#/home') { setTab('home'); renderHome(); }
+    else if (h === '#/today') { const p = PLAN[TODAY_IDX - 1]; location.replace(p.type === 'day' ? `#/day/${p.day}` : `#/check/${p.id}`); }
+    else if ((m = h.match(/^#\/day\/(\d+)(?:\/(\d+))?/))) { setTab('study'); renderDay(+m[1], m[2] ? +m[2] : null); }
+    else if ((m = h.match(/^#\/check\/(R\d)/))) { setTab('study'); renderCheckpoint(m[1]); }
+    else if (h.startsWith('#/review')) { setTab('review'); renderReview(); }
+    else if (h === '#/toc') { setTab('toc'); renderToc(); }
+    else if (h === '#/fixes') { setTab('toc'); renderFixes(); }
+    else if (h === '#/settings') { setTab(''); renderSettings(); }
+    else { setTab('home'); renderHome(); }
+    window.scrollTo(0, 0);
+  }
+
+  // ================= 홈 =================
+  function renderHome() {
+    const p = PLAN[TODAY_IDX - 1];
+    const due = dueDays().length;
+    const totalFix = CURRICULUM_DATA.reduce((a, d) => a + (d.corrections?.length || 0), 0);
+    let todayCard;
+    if (p.type === 'day') {
+      const d = dayData(p.day), pt = partOf(d.part);
+      todayCard = `<div class="k">${fmtDate(TODAY)} · ${TODAY_IDX}/${PLAN.length}회차 · Part ${pt.id} ${pt.short}</div>
+        <div class="t">Day ${pad2(d.day)} ${esc(d.title)}</div>
+        <button class="btn btn-block" onclick="go('#/day/${d.day}')">${completed.has(d.day) ? '✅ 완료 · 다시 보기' : '▶ 오늘 학습 시작'}</button>`;
+    } else {
+      todayCard = `<div class="k">${fmtDate(TODAY)} · ${TODAY_IDX}/${PLAN.length}회차 · 복습 체크포인트</div>
+        <div class="t">🧩 ${esc(p.title)}</div>
+        <button class="btn btn-block" onclick="go('#/check/${p.id}')">${cpDone.has(p.id) ? '✅ 완료 · 다시 보기' : '▶ 파트 복습 시작'}</button>`;
+    }
+    const parts = PARTS.map(pt => {
+      const ids = range(pt.days[0], pt.days[1]); const done = ids.filter(n => completed.has(n)).length;
+      const cp = PLAN.find(x => x.type === 'review' && x.part === pt.id);
+      return `<div class="part-row"><div><span class="pdot" style="background:${pt.color}"></span> <b>Part ${pt.id}</b> ${esc(pt.title)} <span class="muted small">· ${pt.subject}</span></div>
+        <div class="small muted">${done}/${ids.length}${cp ? (cpDone.has(cp.id) ? ' · 🧩✓' : ' · 🧩') : ''}</div>
+        <div class="bar"><i style="width:${done / ids.length * 100}%;background:${pt.color}"></i></div></div>`;
+    }).join('');
+    view.innerHTML = `
+      <section class="card hero">${todayCard}</section>
+      <div class="stats">
+        <div class="stat"><b>${completed.size}</b><span>완료 / 35일</span></div>
+        <div class="stat" onclick="go('#/review')" style="cursor:pointer"><b style="color:var(--accent)">${due}</b><span>오늘 복습</span></div>
+        <div class="stat"><b>${cpDone.size}</b><span>체크포인트 / 5</span></div>
+      </div>
+      ${due ? `<button class="btn btn-ghost btn-block" style="margin-bottom:14px" onclick="go('#/review')">🔁 복습 카드 ${due}장 먼저 풀기 (간격반복)</button>` : ''}
+      <section class="card"><h2>📈 파트별 진도 <span class="sub">2027 과목 기준</span></h2>${parts}</section>
+      <section class="card">
+        <h2>🧭 학습 순서 (40회차)</h2>
+        <p class="small">본학습 35일 사이에 <b>파트별 복습 체크포인트 5회</b>를 넣었습니다. 매일은 <b>① 복습 카드 → ② 오늘 학습 7단계 → ③ 자기평가</b> 순서로 진행합니다. 자기평가에 따라 복습일이 1·3·7·14·30일 간격으로 자동 배정됩니다.</p>
+      </section>
+      ${totalFix ? `<section class="card" style="border-color:var(--warn)"><h2>⚠️ 학습 내용 정정 ${totalFix}건</h2>
+        <p class="small">매뉴얼(2025.4)·NFTC 해설서(2024) 원문 대조로 수치·기준을 정정했습니다. 이미 외운 내용과 다를 수 있으니 확인하세요.</p>
+        <button class="btn btn-line btn-block" style="margin-top:10px" onclick="go('#/fixes')">정정 내역 보기</button></section>` : ''}
+      <section class="card"><h2>📌 ${esc(EXAM_INFO.title)} 개편</h2><p class="small">${esc(EXAM_INFO.note)}</p></section>`;
+  }
+  const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+
+  // ================= 일차 학습 =================
+  const STEPS = [
+    { id: 'card', ico: '🎯', name: '인출' }, { id: 'map', ico: '🧠', name: '구조' }, { id: 'mn', ico: '💡', name: '암기' },
+    { id: 'link', ico: '🏛', name: '연계' }, { id: 'chk', ico: '📋', name: '점검표' }, { id: 'ans', ico: '✍️', name: '답안' }, { id: 'rate', ico: '⭐', name: '평가' }];
+  let cur = { day: 1, step: 0 };
+
+  function renderDay(n, step) {
+    const d = dayData(n); if (!d) return go('#/home');
+    const idx = planIdxOfDay(n);
+    if (isLocked(idx) && !completed.has(n)) {
+      view.innerHTML = `<section class="card"><h2>🔒 Day ${pad2(n)}은 ${fmtDate(dateOfIdx(idx))}에 열립니다</h2>
+        <p class="small">데일리 모드에서는 오늘 회차까지만 열립니다. 설정에서 <b>자유 열람</b>으로 바꾸면 미리 볼 수 있습니다.</p>
+        <div class="row" style="margin-top:12px"><button class="btn btn-primary grow" onclick="go('#/today')">오늘 학습으로</button><button class="btn btn-line" onclick="go('#/settings')">설정</button></div></section>`;
+      return;
+    }
+    cur = { day: n, step: step ?? (cur.day === n ? cur.step : 0) };
+    const pt = partOf(d.part);
+    const fixes = d.corrections || [];
+    const all = settings.view === 'all';
+    view.innerHTML = `
+      <section class="dayhead" style="margin-bottom:6px">
+        <div class="k"><span class="tag part" style="background:${pt.color}">Part ${pt.id} ${esc(pt.short)}</span><span class="tag">${esc(d.subject)}</span>
+          ${completed.has(n) ? '<span class="tag" style="background:var(--ok-soft);color:var(--ok)">✓ 완료</span>' : ''}${fixes.length ? `<span class="tag warn">⚠ 정정 ${fixes.length}</span>` : ''}</div>
+        <h1>Day ${pad2(n)} · ${esc(d.title)}</h1>
+        <details class="meta"><summary>ⓘ 출제 연계·참고 범위 보기</summary><p>${esc(d.meta)}</p></details>
+        ${fixes.length ? fixBox(fixes) : ''}
+        <div class="modeseg" role="tablist"><button class="${all ? '' : 'on'}" onclick="setView('step')">단계 학습</button><button class="${all ? 'on' : ''}" onclick="setView('all')">전체 보기</button></div>
+      </section>
+      <nav class="steps noswipe" id="steps">${STEPS.map((s, i) => `<button class="step-chip" data-i="${i}" onclick="toStep(${i})">${s.ico} ${i + 1}.${s.name}</button>`).join('')}</nav>
+      <div id="secs">${STEPS.map((s, i) => `<section class="card sec" id="sec-${s.id}" data-i="${i}">${secHtml(s.id, d)}</section>`).join('')}</div>`;
+    if (!all) {
+      document.body.classList.add('has-stepnav');
+      const nav = document.createElement('div'); nav.className = 'stepnav noswipe';
+      nav.innerHTML = `<div class="in"><button class="btn btn-line" id="prevBtn" onclick="toStep(cur.step-1)">◀ 이전</button><span class="cnt" id="stepCnt"></span><button class="btn btn-primary" id="nextBtn" onclick="nextStep()">다음 ▶</button></div>`;
+      document.body.appendChild(nav);
+    }
+    showStep(cur.step, false);
+  }
+  function fixBox(fixes) {
+    return `<details class="fix"><summary>⚠️ 이번 업데이트 정정 ${fixes.length}건 — 이전에 외운 내용 확인</summary><ul>${fixes.map(f =>
+      `<li><div class="was">${esc(f.before)}</div><div class="now">→ ${esc(f.after)}</div><div class="basis">근거: ${esc(f.basis)}</div></li>`).join('')}</ul></details>`;
+  }
+  function secHead(ico, title, tool) { return `<div class="sec-head"><h2>${ico} ${title}</h2>${tool || ''}</div>`; }
+  const maskTool = `<button class="tool" onclick="toggleMasks(this)">빈칸 모두 보기</button>`;
+  function secHtml(id, d) {
+    switch (id) {
+      case 'card': return secHead('🎯', '1. 인출 카드') + `<p class="guide">정답을 보기 전에 <b>먼저 소리 내어 떠올려 보세요</b>. 카드를 누르면 뒤집힙니다.</p>
+        <div class="flip" onclick="if(!event.target.closest('.hint-btn'))this.classList.toggle('on')" role="button" tabindex="0" aria-label="카드 뒤집기">
+          <div class="flip-in">
+            <div class="face front"><span class="lbl">Day ${pad2(d.day)} · 질문</span><div class="q">${esc(d.cardFront)}</div>
+              <button class="hint-btn" onclick="this.nextElementSibling.hidden=!this.nextElementSibling.hidden">💡 힌트</button><div class="hint" hidden>${esc(d.cardHint)}</div>
+              <div class="foot">눌러서 정답 ↻</div></div>
+            <div class="face back"><span class="lbl" style="color:var(--teal)">정답</span><div class="a">${rich(d.cardBack)}</div><div class="foot muted">다시 누르면 앞면 ↺</div></div>
+          </div></div>`;
+      case 'map': return secHead('🧠', '2. 구조화 마인드맵', maskTool) + `<p class="guide">검은 칸은 빈칸입니다. 값을 말해 본 뒤 눌러서 확인하세요.</p>${mindmap(d.mindmap)}`;
+      case 'mn': return secHead('💡', '3. 두문자 암기') + d.mnemonics.map(m => `<div class="mn"><div><span class="tag" style="margin-right:6px">${esc(m.tag)}</span><span class="r">“${esc(m.rule)}”</span></div><div class="d">${rich(m.desc)}</div></div>`).join('');
+      case 'link': return secHead('🏛', '4. 3단 연계 (기준 × 점검표 × 매뉴얼)', maskTool) + linkHtml(d);
+      case 'chk': return secHead('📋', '5. 자체점검표 판정', maskTool) + `<p class="guide">위는 매뉴얼 점검표 <b>원문 항목명</b>, 아래는 실무 점검 포인트입니다.</p>` + d.checklist.map(chkHtml).join('');
+      case 'ans': return secHead('✍️', '6. 서술형 답안', `<button class="tool" onclick="blankAns(this)">백지 모드</button>`) +
+        `<p class="guide">백지 모드로 가린 뒤 직접 써 보고, 빈칸을 눌러 핵심어를 확인하세요.</p><div class="ans">${rich(d.answer)}</div>
+         <div class="ref" style="margin-top:12px"><div>📗 <b>매뉴얼</b> ${esc(d.reference.manual)}</div><div>📘 <b>기준·해설서</b> ${esc(d.reference.guide)}</div></div>`;
+      case 'rate': {
+        const s = srs[d.day];
+        return secHead('⭐', '7. 자기평가 → 복습 예약') + `<p class="guide">오늘 내용을 얼마나 인출할 수 있었나요? 선택하면 학습 완료로 기록되고 다음 복습일이 정해집니다.</p>
+          <div class="rate">${[['😣 다시', '내일 복습'], ['🙂 보통', '3일 후~'], ['😎 쉬움', '7일 후~']].map((r, i) =>
+            `<button class="${s && s.last === TODAY && s.r === i ? 'sel' : ''}" onclick="rateAndNext(${d.day},${i})">${r[0]}<small>${r[1]}</small></button>`).join('')}</div>
+          ${s ? `<p class="small muted" style="margin-top:10px">다음 복습: <b>${fmtDate(s.due)}</b> · 반복 단계 ${s.stage + 1}/${INTERVALS.length}</p>` : ''}
+          <div class="row" style="margin-top:12px">${completed.has(d.day) ? `<button class="btn btn-line" onclick="unComplete(${d.day})">완료 취소</button>` : ''}<button class="btn btn-ghost grow" onclick="goNextPlan(${d.day})">다음 회차 ▶</button></div>`;
+      }
+    }
+  }
+  function linkHtml(d) {
+    if (d.triad && d.triad.length) {
+      return d.triad.map((t, k) => `<div class="triad" data-tab="0">
+        <div class="triad-topic">📌 ${esc(t.topic)}</div>
+        <div class="seg noswipe">${['기준(NFTC)', '점검표', '매뉴얼'].map((x, i) => `<button class="${i ? '' : 'on'}" onclick="triTab(this,${i})">${x}</button>`).join('')}</div>
+        <div class="tri-cols"><div class="tri n"><span class="tl">① 화재안전기술기준</span>${rich(t.nftc)}</div><div class="tri c"><span class="tl">② 자체점검표</span>${rich(t.checklist)}</div><div class="tri m"><span class="tl">③ 점검 매뉴얼 절차</span>${rich(t.manual)}</div></div></div>`).join('');
+    }
+    // triad가 없는 일차: 점검표 항목으로 3단 연계 자동 구성
+    return `<p class="guide">이 일차는 점검표 항목을 기준으로 연계표를 구성했습니다.</p>` + d.checklist.map(c => {
+      const info = CODE_INFO[c.code];
+      return `<div class="triad" data-tab="0"><div class="triad-topic">📌 ${esc(c.name)}</div>
+        <div class="seg noswipe">${['판정 기준', '점검표 원문', '점검 방법'].map((x, i) => `<button class="${i ? '' : 'on'}" onclick="triTab(this,${i})">${x}</button>`).join('')}</div>
+        <div class="tri-cols"><div class="tri n"><span class="tl">① 판정 기준(양호)</span>${rich(c.pass)}</div>
+        <div class="tri c"><span class="tl">② 자체점검표</span>${info ? `<span class="code">${esc(c.code)}</span> ${esc(info.title)}${info.page ? `\n(매뉴얼 ${info.vol}권 p${info.page})` : ''}` : esc(c.code === undefined ? '' : '행정 실무 항목 (점검표 코드 없음)')}</div>
+        <div class="tri m"><span class="tl">③ 점검 방법</span>${rich(c.method)}\n\n❌ ${esc(c.fail)}</div></div></div>`;
+    }).join('');
+  }
+  function chkHtml(c) {
+    const info = CODE_INFO[c.code];
+    const codeChip = /^(관리|FINAL)/.test(c.code) ? `<span class="tag">${esc(c.code)}</span>` : `<span class="code">${esc(c.code)}</span>`;
+    return `<div class="chk"><div class="top">${codeChip}<div class="grow">${info ? `<div class="off">${esc(info.title)}${info.page ? ` · 매뉴얼 ${info.vol}권 p${info.page}` : ''}</div>` : (/^관리/.test(c.code) ? '<div class="off">행정·관리 실무 항목(점검표 코드 대상 아님)</div>' : '')}</div></div>
+      <div class="nm">${esc(c.name)}</div><div class="how">🔧 ${rich(c.method)}</div>
+      <div class="verdict"><div class="p"><b>✅ 양호</b> ${rich(c.pass)}</div><div class="f"><b>❌ 불량</b> ${rich(c.fail)}</div></div></div>`;
+  }
+  function setView(v) { settings.view = v; saveAll(); renderDay(cur.day, cur.step); }
+  function showStep(i, scroll = true) {
+    i = Math.max(0, Math.min(STEPS.length - 1, i)); cur.step = i;
+    const all = settings.view === 'all';
+    document.querySelectorAll('#secs .sec').forEach(s => s.hidden = !all && +s.dataset.i !== i);
+    document.querySelectorAll('.step-chip').forEach(c => { c.classList.toggle('on', +c.dataset.i === i); });
+    const chip = document.querySelector(`.step-chip[data-i="${i}"]`); chip?.scrollIntoView({ inline: 'center', block: 'nearest' });
+    const cnt = document.getElementById('stepCnt'); if (cnt) cnt.textContent = `${i + 1} / ${STEPS.length}`;
+    const pb = document.getElementById('prevBtn'), nb = document.getElementById('nextBtn');
+    if (pb) pb.disabled = i === 0;
+    if (nb) nb.textContent = i === STEPS.length - 1 ? '다음 회차 ▶' : '다음 ▶';
+    if (scroll) {
+      if (all) document.getElementById('sec-' + STEPS[i].id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      else window.scrollTo({ top: document.querySelector('.steps').offsetTop - 60, behavior: 'smooth' });
+    }
+  }
+  function toStep(i) { showStep(i); }
+  function nextStep() { if (cur.step === STEPS.length - 1) goNextPlan(cur.day); else showStep(cur.step + 1); }
+  function rateAndNext(n, r) { rateDay(n, r); toast(['내일 다시 복습합니다', '복습일 예약 완료', '좋아요! 간격을 늘렸습니다'][r]); renderDay(n, STEPS.length - 1); }
+  function unComplete(n) { completed.delete(n); delete srs[n]; saveAll(); updateBadges(); renderDay(n, STEPS.length - 1); }
+  function goNextPlan(n) { const i = planIdxOfDay(n); const p = PLAN[i]; if (!p) return go('#/home'); go(p.type === 'day' ? `#/day/${p.day}` : `#/check/${p.id}`); }
+  function triTab(btn, i) { const t = btn.closest('.triad'); t.dataset.tab = i; t.querySelectorAll('.seg button').forEach((b, k) => b.classList.toggle('on', k === i)); }
+  function toggleMasks(btn) {
+    const sec = btn.closest('.sec'); const ms = sec.querySelectorAll('.mask'); const show = ![...ms].every(m => m.classList.contains('on'));
+    ms.forEach(m => m.classList.toggle('on', show)); btn.textContent = show ? '빈칸 다시 가리기' : '빈칸 모두 보기';
+  }
+  function blankAns(btn) { const a = btn.closest('.sec').querySelector('.ans'); a.classList.toggle('blank'); btn.textContent = a.classList.contains('blank') ? '답안 보이기' : '백지 모드'; }
+
+  // ================= 파트 복습 체크포인트 =================
+  function renderCheckpoint(id) {
+    const cp = PLAN.find(p => p.type === 'review' && p.id === id); if (!cp) return go('#/home');
+    const idx = planIdxOfCp(id);
+    if (isLocked(idx) && !cpDone.has(id)) { view.innerHTML = `<section class="card"><h2>🔒 ${esc(cp.title)}</h2><p class="small">${fmtDate(dateOfIdx(idx))}에 열립니다.</p></section>`; return; }
+    const pt = partOf(cp.part); const ids = range(pt.days[0], pt.days[1]);
+    const fixes = ids.flatMap(n => (dayData(n).corrections || []).map(f => ({ ...f, n })));
+    const label = r => r === undefined ? '<span class="muted">미평가</span>' : ['😣 다시', '🙂 보통', '😎 쉬움'][r];
+    view.innerHTML = `
+      <section class="dayhead"><div class="k"><span class="tag part" style="background:${pt.color}">Part ${pt.id} ${esc(pt.short)}</span><span class="tag">복습 체크포인트</span></div>
+        <h1>🧩 ${esc(cp.title)}</h1><p class="small muted">목표: ${esc(pt.goal)}</p></section>
+      <section class="card"><h2>① 카드 전체 인출 <span class="sub">${ids.length}장 셔플</span></h2>
+        <p class="small">파트의 모든 카드를 섞어서 풉니다. 평가 결과는 간격반복 일정에 반영됩니다.</p>
+        <button class="btn btn-primary btn-block" style="margin-top:10px" onclick="startSession([${ids}], true)">카드 복습 시작</button></section>
+      <section class="card sec"><div class="sec-head"><h2>② 마인드맵 빈칸 테스트</h2>${maskTool}</div>
+        ${ids.map(n => `<details style="margin-bottom:8px"><summary class="small"><b>Day ${pad2(n)}</b> ${esc(dayData(n).title)}</summary><div style="margin-top:8px">${mindmap(dayData(n).mindmap)}</div></details>`).join('')}</section>
+      <section class="card"><h2>③ 서술형 백지 연습</h2>
+        ${ids.map(n => `<details style="margin-bottom:8px"><summary class="small"><b>Day ${pad2(n)}</b> ${esc(dayData(n).cardFront)}</summary><div class="ans" style="margin-top:8px">${rich(dayData(n).answer)}</div></details>`).join('')}</section>
+      <section class="card"><h2>④ 자기평가 현황 <span class="sub">약한 일차부터 다시</span></h2><ul class="list">
+        ${ids.slice().sort((a, b) => (srs[a]?.r ?? -1) - (srs[b]?.r ?? -1)).map(n => `<li><span class="grow">Day ${pad2(n)} ${esc(dayData(n).title)}</span><span class="small">${label(srs[n]?.r)}</span><button class="btn btn-line" style="min-height:36px;padding:4px 10px" onclick="go('#/day/${n}')">열기</button></li>`).join('')}</ul></section>
+      ${fixes.length ? `<section class="card">${fixBox(fixes.map(f => ({ ...f, before: `[D${f.n}] ` + f.before })))}</section>` : ''}
+      <button class="btn ${cpDone.has(id) ? 'btn-line' : 'btn-primary'} btn-block" onclick="toggleCp('${id}')">${cpDone.has(id) ? '✅ 체크포인트 완료됨 (취소)' : '🧩 체크포인트 완료'}</button>
+      <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="nextFromCp('${id}')">다음 회차 ▶</button>`;
+  }
+  function toggleCp(id) { cpDone.has(id) ? cpDone.delete(id) : cpDone.add(id); saveAll(); renderCheckpoint(id); }
+  function nextFromCp(id) { const p = PLAN[planIdxOfCp(id)]; if (!p) return go('#/home'); go(p.type === 'day' ? `#/day/${p.day}` : `#/check/${p.id}`); }
+
+  // ================= 복습(간격반복) =================
+  let session = null;
+  function renderReview() {
+    if (session) return renderSession();
+    const due = dueDays();
+    const upcoming = Object.entries(srs).filter(([, v]) => v.due > TODAY).sort((a, b) => a[1].due.localeCompare(b[1].due)).slice(0, 12);
+    const studied = [...completed].sort((a, b) => a - b);
+    view.innerHTML = `
+      <section class="card"><h2>🔁 오늘의 복습 <span class="sub">${fmtDate(TODAY)}</span></h2>
+        ${due.length ? `<p class="small">복습할 카드 <b>${due.length}장</b>. 질문을 보고 답을 떠올린 뒤 정답을 확인하세요.</p>
+          <button class="btn btn-primary btn-block" style="margin-top:10px" onclick="startSession(dueDays())">복습 시작</button>`
+          : `<p class="small">오늘 예정된 복습이 없습니다. 👍 ${studied.length ? '아래에서 원하는 범위를 골라 추가로 풀 수 있습니다.' : '학습을 마치고 자기평가를 하면 복습 일정이 생깁니다.'}</p>`}
+      </section>
+      ${studied.length ? `<section class="card"><h2>🎲 자유 복습</h2><div class="opt">
+        <button onclick="startSession([${studied}], true)">완료한 전체 ${studied.length}장</button>
+        ${PARTS.map(pt => { const ids = range(pt.days[0], pt.days[1]).filter(n => completed.has(n)); return ids.length ? `<button onclick="startSession([${ids}], true)">Part ${pt.id} ${esc(pt.short)} (${ids.length})</button>` : ''; }).join('')}
+        ${Object.keys(srs).filter(k => srs[k].r === 0).length ? `<button onclick="startSession([${Object.keys(srs).filter(k => srs[k].r === 0)}], true)">😣 약한 카드만</button>` : ''}
+      </div></section>` : ''}
+      ${upcoming.length ? `<section class="card"><h2>📅 예정된 복습</h2><ul class="list">${upcoming.map(([n, v]) => `<li><span class="grow">Day ${pad2(+n)} ${esc(dayData(+n).title)}</span><span class="small muted">${fmtDate(v.due)}</span></li>`).join('')}</ul></section>` : ''}`;
+  }
+  function startSession(ids, shuffle) {
+    ids = [...new Set(ids.map(Number))]; if (!ids.length) return toast('복습할 카드가 없습니다');
+    if (shuffle) ids.sort(() => Math.random() - .5);
+    session = { ids, i: 0, shown: false, results: [] };
+    if (!location.hash.startsWith('#/review')) go('#/review'); else renderSession();
+  }
+  function renderSession() {
+    const s = session;
+    if (s.i >= s.ids.length) {
+      const c = [0, 1, 2].map(r => s.results.filter(x => x === r).length);
+      view.innerHTML = `<section class="card"><h2>🎉 복습 완료</h2><p>총 ${s.ids.length}장 · 😣 ${c[0]} · 🙂 ${c[1]} · 😎 ${c[2]}</p>
+        <button class="btn btn-primary btn-block" style="margin-top:12px" onclick="session=null;renderReview()">복습 목록으로</button>
+        <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="session=null;go('#/today')">오늘 학습으로</button></section>`;
+      updateBadges(); return;
+    }
+    const d = dayData(s.ids[s.i]); const pt = partOf(d.part);
+    view.innerHTML = `
+      <div class="row small muted" style="margin-bottom:8px"><span class="grow">${s.i + 1} / ${s.ids.length}</span><button class="btn btn-line" style="min-height:34px;padding:4px 10px" onclick="session=null;renderReview()">그만하기</button></div>
+      <div class="bar" style="margin-bottom:12px"><i style="width:${s.i / s.ids.length * 100}%;background:var(--primary-2)"></i></div>
+      <section class="card"><div class="k" style="margin-bottom:8px"><span class="tag part" style="background:${pt.color}">Day ${pad2(d.day)}</span> <span class="small muted">${esc(d.title)}</span></div>
+        <div class="rv-q">${esc(d.cardFront)}</div>
+        <details style="margin-top:8px"><summary class="small muted">💡 힌트</summary><p class="small">${esc(d.cardHint)}</p></details>
+        ${s.shown ? `<div class="rv-a">${rich(d.cardBack)}</div>` : ''}
+      </section>
+      ${s.shown ? `<div class="rate">${['😣 다시', '🙂 보통', '😎 쉬움'].map((r, i) => `<button onclick="sessionRate(${i})">${r}</button>`).join('')}</div>
+        <button class="btn btn-line btn-block" style="margin-top:8px" onclick="go('#/day/${d.day}/1')">이 일차 마인드맵 다시 보기</button>`
+        : `<button class="btn btn-primary btn-block" onclick="session.shown=true;renderSession()">정답 보기</button>`}`;
+  }
+  function sessionRate(r) { const s = session; rateDay(s.ids[s.i], r); s.results.push(r); s.i++; s.shown = false; renderSession(); window.scrollTo(0, 0); }
+
+  // ================= 목차 =================
+  function renderToc(q = '') {
+    const ql = q.trim().toLowerCase();
+    const match = d => !ql || [d.title, d.cardFront, d.cardHint, d.meta, ...d.checklist.map(c => c.code + ' ' + c.name)].join(' ').toLowerCase().includes(ql);
+    const items = PARTS.map(pt => {
+      const rows = PLAN.map((p, k) => ({ ...p, idx: k + 1 })).filter(p => (p.type === 'day' && dayData(p.day).part === pt.id) || (p.type === 'review' && p.part === pt.id));
+      const html = rows.map(p => {
+        if (p.type === 'review') { if (ql) return ''; return `<button class="toc-item cp ${p.idx === TODAY_IDX ? 'today' : ''} ${isLocked(p.idx) ? 'locked' : ''}" onclick="go('#/check/${p.id}')"><span class="n">🧩</span><span class="t">${esc(p.title)}<br><span class="small muted">${fmtDate(dateOfIdx(p.idx))}</span></span><span class="s">${cpDone.has(p.id) ? '✅' : isLocked(p.idx) ? '🔒' : ''}</span></button>`; }
+        const d = dayData(p.day); if (!match(d)) return '';
+        const st = completed.has(d.day) ? '✅' : isLocked(p.idx) ? '🔒' : '';
+        return `<button class="toc-item ${p.idx === TODAY_IDX ? 'today' : ''} ${isLocked(p.idx) && !completed.has(d.day) ? 'locked' : ''}" onclick="go('#/day/${d.day}')"><span class="n">Day ${pad2(d.day)}</span><span class="t">${esc(d.title)}<br><span class="small muted">${fmtDate(dateOfIdx(p.idx))}${d.corrections ? ' · ⚠ 정정' : ''}${srs[d.day] ? ` · 복습 ${fmtDate(srs[d.day].due)}` : ''}</span></span><span class="s">${st}</span></button>`;
+      }).join('');
+      return html.trim() ? `<div class="toc-part"><h3><span class="pdot" style="background:${pt.color}"></span>Part ${pt.id}. ${esc(pt.title)} <span class="muted small">· ${pt.subject}</span></h3>${html}</div>` : '';
+    }).join('');
+    if (!document.getElementById('tocSearch')) {
+      view.innerHTML = `<input class="search" id="tocSearch" type="search" placeholder="🔎 설비·키워드·점검코드 검색 (예: 방연풍속, 9-A)" oninput="renderToc(this.value)" value="${esc(q)}">
+        <div class="row" style="margin-bottom:12px"><span class="small muted grow">${freeMode ? '🔓 자유 열람 모드' : '🔒 데일리 모드 (오늘 회차까지 열림)'}</span><button class="btn btn-line" style="min-height:36px;padding:4px 12px" onclick="go('#/fixes')">⚠ 정정 내역</button></div><div id="tocList"></div>`;
+    }
+    document.getElementById('tocList').innerHTML = items || '<p class="muted small">검색 결과가 없습니다.</p>';
+  }
+  function renderFixes() {
+    const all = CURRICULUM_DATA.filter(d => d.corrections);
+    view.innerHTML = `<section class="card"><h2>⚠️ 학습 내용 정정 내역</h2><p class="small">2025.4 점검·관리 매뉴얼과 2024 화재안전기술기준 해설서 원문을 대조해 바꾼 내용입니다. 줄 그은 값은 이전 표기입니다.</p></section>` +
+      all.map(d => `<section class="card"><h2 style="font-size:.95rem">Day ${pad2(d.day)} ${esc(d.title)}</h2>${fixBox(d.corrections).replace('<details class="fix">', '<details class="fix" open>')}<button class="btn btn-line btn-block" style="margin-top:8px" onclick="go('#/day/${d.day}')">이 일차 열기</button></section>`).join('');
+  }
+
+  // ================= 설정 =================
+  function renderSettings() {
+    const opt = (key, val, label, cb) => `<button class="${settings[key] === val ? 'on' : ''}" onclick="${cb}">${label}</button>`;
+    view.innerHTML = `
+      <section class="card"><h2>⚙️ 설정</h2>
+        <div class="set-row"><label>학습 모드</label><div class="opt">
+          <button class="${freeMode ? '' : 'on'}" onclick="freeMode=false;saveAll();renderSettings()">🔒 데일리</button>
+          <button class="${freeMode ? 'on' : ''}" onclick="freeMode=true;saveAll();renderSettings()">🔓 자유 열람</button></div></div>
+        <div class="set-row"><label>글자 크기</label><div class="opt">
+          ${[[0.9, '작게'], [1, '보통'], [1.12, '크게'], [1.25, '아주 크게']].map(([v, l]) => opt('font', v, l, `setSetting('font',${v})`)).join('')}</div></div>
+        <div class="set-row"><label>화면 테마</label><div class="opt">
+          ${[['auto', '시스템'], ['light', '라이트'], ['dark', '다크']].map(([v, l]) => opt('theme', v, l, `setSetting('theme','${v}')`)).join('')}</div></div>
+        <div class="set-row"><label>시험일 (D-day)</label><input type="date" value="${esc(settings.examDate)}" onchange="setSetting('examDate',this.value)"></div>
+        <div class="set-row"><label>학습 시작일</label><span class="small muted">${fmtDate(START_DATE)} (data.js의 START_DATE)</span></div>
+      </section>
+      <section class="card"><h2>💾 학습 기록 옮기기</h2>
+        <p class="small">기록은 이 기기 브라우저에만 저장됩니다. PC↔휴대폰 이동이나 백업은 파일로 내보내고 불러오세요.</p>
+        <div class="row" style="margin-top:10px"><button class="btn btn-line grow" onclick="exportData()">⬇️ 내보내기</button>
+          <label class="btn btn-line grow" style="cursor:pointer">⬆️ 불러오기<input type="file" accept="application/json" hidden onchange="importData(this.files[0])"></label></div>
+        <button class="btn btn-block" style="margin-top:8px;color:var(--bad)" onclick="resetData()">기록 초기화</button>
+      </section>
+      <section class="card"><h2>🖨 인쇄</h2><p class="small">35일 전체 암기카드를 명함 크기로 인쇄합니다.</p>
+        <a class="btn btn-ghost btn-block" style="margin-top:10px;text-decoration:none" href="print_cards.html">암기카드 인쇄 페이지</a></section>`;
+  }
+  function setSetting(k, v) { settings[k] = v; saveAll(); applySettings(); renderSettings(); }
+  function applySettings() {
+    document.documentElement.style.setProperty('--fs', (15 * settings.font) + 'px');
+    if (settings.theme === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.dataset.theme = settings.theme;
+    const dd = document.getElementById('dday');
+    if (settings.examDate) { const n = Math.round((parseYmd(settings.examDate) - today0()) / DAY_MS); dd.hidden = false; dd.textContent = n > 0 ? `D-${n}` : n === 0 ? 'D-DAY' : `D+${-n}`; }
+    else dd.hidden = true;
+  }
+  function exportData() {
+    const blob = new Blob([JSON.stringify({ v: 2, completedDays: [...completed], freeMode, srs, cpDone: [...cpDone], settings }, null, 1)], { type: 'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `fire-study-backup-${TODAY}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+  function importData(file) {
+    if (!file) return; const fr = new FileReader();
+    fr.onload = () => { try { const o = JSON.parse(fr.result); completed = new Set((o.completedDays || []).map(Number)); freeMode = !!o.freeMode; srs = o.srs || {}; cpDone = new Set(o.cpDone || []); settings = Object.assign(settings, o.settings || {}); saveAll(); applySettings(); updateBadges(); toast('기록을 불러왔습니다'); renderSettings(); } catch (e) { toast('파일 형식이 올바르지 않습니다'); } };
+    fr.readAsText(file);
+  }
+  function resetData() { if (!confirm('완료 기록·복습 일정·체크포인트를 모두 지울까요?')) return; completed = new Set(); srs = {}; cpDone = new Set(); saveAll(); updateBadges(); toast('초기화했습니다'); }
+
+  // ================= 공통 =================
+  function updateBadges() { const n = dueDays().length; const b = document.getElementById('dueBadge'); b.hidden = !n; b.textContent = n; }
+  let toastT; function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 1800); }
+  // 빈칸 탭/키보드
+  document.addEventListener('click', e => { const m = e.target.closest('.mask'); if (m) { e.stopPropagation(); m.classList.toggle('on'); } }, true);
+  document.addEventListener('keydown', e => {
+    const m = e.target.closest?.('.mask'); if (m && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); m.classList.toggle('on'); return; }
+    if (e.target.closest?.('.flip') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.target.closest('.flip').classList.toggle('on'); }
+    if (document.body.classList.contains('has-stepnav') && !/INPUT|TEXTAREA/.test(e.target.tagName)) { if (e.key === 'ArrowRight') nextStep(); if (e.key === 'ArrowLeft') toStep(cur.step - 1); }
+  });
+  // 좌우 스와이프로 단계 이동
+  let tx = null, ty = null;
+  view.addEventListener('touchstart', e => { if (e.target.closest('.noswipe, pre, .mm-body')) { tx = null; return; } tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  view.addEventListener('touchend', e => {
+    if (tx === null || !document.body.classList.contains('has-stepnav')) return;
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty; tx = null;
+    if (Math.abs(dx) > 70 && Math.abs(dy) < 45) dx < 0 ? nextStep() : toStep(cur.step - 1);
+  }, { passive: true });
+
+  applySettings(); updateBadges(); route();
   </script>
 </body>
 </html>

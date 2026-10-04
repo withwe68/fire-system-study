@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>암기카드 인쇄</title>
+  <style>
+    @page { size: A4 portrait; margin: 12mm 10mm; }
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; background: #eef1f4; color: #1d232b; word-break: keep-all; }
+    .bar { position: sticky; top: 0; z-index: 5; background: #003366; color: #fff; padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .bar b { margin-right: auto; }
+    .bar select, .bar button, .bar a { font: inherit; font-size: 14px; border-radius: 8px; border: 0; padding: 8px 12px; min-height: 40px; }
+    .bar button { background: #fff; color: #003366; font-weight: 700; cursor: pointer; }
+    .bar a { color: #fff; background: rgba(255,255,255,.15); text-decoration: none; }
+    .tip { max-width: 190mm; margin: 12px auto; font-size: 13px; color: #555; padding: 0 16px; }
+    .page { width: 190mm; height: 260mm; margin: 0 auto 10mm; background: #fff; padding: 2mm; page-break-after: always; break-after: page;
+      display: grid; grid-template-columns: repeat(2, 89mm); grid-template-rows: repeat(4, 53mm); gap: 6mm; justify-content: center; align-content: center; }
+    .card { width: 89mm; height: 53mm; border: 2.5px solid var(--c); border-radius: 12px; padding: 3.2mm 4.5mm; display: flex; flex-direction: column; overflow: hidden; }
+    .hd { display: flex; justify-content: space-between; align-items: center; font-size: 9.5pt; font-weight: 800; color: var(--c); border-bottom: 1.2px dashed var(--c); padding-bottom: 1mm; }
+    .hd .ck { color: #868e96; letter-spacing: 2px; font-weight: 500; }
+    .q { margin: auto 0; display: flex; gap: 2.5mm; align-items: center; font-size: 10.5pt; font-weight: 800; line-height: 1.4; }
+    .punch { width: 5mm; height: 5mm; border: 1.2px dashed #868e96; border-radius: 50%; flex: 0 0 auto; }
+    .hint { font-size: 8pt; color: #495057; border-top: 1px dotted #ced4da; padding-top: 1mm; }
+    .a { font-size: 7.6pt; line-height: 1.38; white-space: pre-line; margin-top: 1.2mm; overflow: hidden; }
+    .fix { font-size: 6.8pt; color: #c92a2a; margin-top: auto; }
+    .empty { border: 0; }
+    @media print { body { background: #fff; } .bar, .tip { display: none; } .page { margin: 0 auto; } }
+    @media screen and (max-width: 800px) {
+      .page { width: auto; height: auto; grid-template-columns: 1fr; grid-template-rows: none; padding: 12px; margin: 0 8px 12px; }
+      .card { width: 100%; height: auto; min-height: 53mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bar">
+    <b>🖨 암기카드 인쇄 (89×53mm)</b>
+    <select id="range" aria-label="인쇄 범위"></select>
+    <button onclick="window.print()">인쇄</button>
+    <a href="index.html">← 학습 화면</a>
+  </div>
+  <p class="tip">A4 양면 인쇄 시 <b>긴 쪽 넘김</b>으로 출력하면 앞·뒷면이 맞습니다(뒷면 페이지는 좌우가 바뀌어 배치됩니다). 배율은 "실제 크기(100%)"로 설정하세요.</p>
+  <div id="out"></div>
+  <script src="data.js"></script>
+  <script>
+    const sel = document.getElementById('range');
+    sel.innerHTML = `<option value="all">전체 35일</option>` + PARTS.map(p => `<option value="${p.id}">Part ${p.id} ${p.title} (Day ${p.days[0]}~${p.days[1]})</option>`).join('');
+    sel.onchange = render;
+    const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const plain = s => esc(s).replace(/\[|\]/g, ''); // 인쇄용: 빈칸 괄호 제거
+    function front(d) {
+      const p = PARTS.find(x => x.id === d.part);
+      return `<div class="card" style="--c:${p.color}"><div class="hd"><span>Day ${String(d.day).padStart(2, '0')} · ${esc(p.short)}</span><span class="ck">□□□</span></div>
+        <div class="q"><span class="punch"></span><span>${esc(d.cardFront)}</span></div><div class="hint">💡 ${esc(d.cardHint)}</div></div>`;
+    }
+    function back(d) {
+      const p = PARTS.find(x => x.id === d.part);
+      return `<div class="card" style="--c:${p.color}"><div class="hd"><span>Day ${String(d.day).padStart(2, '0')} 정답</span><span class="ck">${esc(p.subject)}</span></div>
+        <div class="a">${plain(d.cardBack)}</div>${d.corrections ? `<div class="fix">※ 2026.10 정정 반영</div>` : ''}</div>`;
+    }
+    function render() {
+      const v = sel.value;
+      const list = CURRICULUM_DATA.filter(d => v === 'all' || d.part === +v);
+      let html = '';
+      for (let i = 0; i < list.length; i += 8) {
+        const chunk = list.slice(i, i + 8);
+        while (chunk.length < 8) chunk.push(null);
+        html += `<section class="page">${chunk.map(d => d ? front(d) : '<div class="card empty"></div>').join('')}</section>`;
+        // 뒷면: 행마다 좌우 교환 (긴 쪽 넘김 양면 인쇄 정렬)
+        const mir = []; for (let r = 0; r < 4; r++) mir.push(chunk[r * 2 + 1], chunk[r * 2]);
+        html += `<section class="page">${mir.map(d => d ? back(d) : '<div class="card empty"></div>').join('')}</section>`;
+      }
+      document.getElementById('out').innerHTML = html;
+    }
+    render();
+  </script>
+</body>
+</html>
